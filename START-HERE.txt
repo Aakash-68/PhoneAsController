@@ -15,18 +15,20 @@ In aeroplane mode, click "Turn on Wi-Fi" in the PhoneController window.
 1. In the PhoneController window, scan the "Step 1" code with the phone camera and tap Join.
    If the phone warns "no internet", choose to stay connected.
    If you have mobile data on and the next step won't load, turn mobile data off.
-2. Scan the "Step 2" code, or type https://phonepad.local in the phone's browser.
-   On the security warning tap Advanced, then Proceed. This only happens once.
+2. Scan the "Step 2" code, or type the address shown under it in the phone's browser.
 
 USB CABLE INSTEAD
 1. Plug the phone in. On the phone turn on USB tethering:
    Settings > Connections > Mobile Hotspot and Tethering > USB tethering
 2. Click "USB cable" in the PhoneController window and scan the code.
 
-USE THE PHONE AS A MOUSE
+USE THE PHONE AS A TRACKPAD
 1. Turn on "Phone can be the mouse" in the PhoneController window.
-2. On the phone open Mouse, lay it flat, screen up, on a hard table, and wait for "Ready".
-3. Slide it like a mouse. Tap the big L and R areas to click. Lift it to reposition.
+2. On the phone open Mouse and use it as a trackpad:
+   One finger: move.  Tap: click.  Double-tap and keep your finger down: drag.
+   Two fingers: tap to right-click, drag to scroll.
+   Three fingers: tap to show open windows, swipe up to show the desktop,
+   swipe left or right to change desktops.
    Change the speed under the Mouse tab on the phone's home screen.
 
 REMOVE
