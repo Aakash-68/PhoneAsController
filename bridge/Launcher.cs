@@ -1,6 +1,6 @@
 // Launcher mode (double-click PhoneController.exe): start the server hidden if it isn't running,
-// then open the manager as an app window. Closing the window leaves the server running for the
-// phones; "Quit" in the manager stops it.
+// open the manager as an app window, and exit. The server stops itself when that window closes,
+// taking the hotspot, ports and helpers with it, so nothing is left running.
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -35,6 +35,7 @@ static class Launcher
             };
             psi.EnvironmentVariables["PC_BRIDGE"] = Process.GetCurrentProcess().MainModule!.FileName;
             psi.EnvironmentVariables["PC_LOG"] = "1";
+            psi.EnvironmentVariables["PC_EXIT_WITH_WINDOW"] = "1";
             Process.Start(psi);
             var deadline = DateTime.UtcNow.AddSeconds(20);
             while (!ServerUp())

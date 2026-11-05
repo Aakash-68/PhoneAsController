@@ -423,7 +423,7 @@ function render() {
   $('defaultType').querySelectorAll('.key').forEach((k) => k.classList.toggle('is-on', k.dataset.v === lastState.vpad.defaultType));
 }
 function connect() {
-  ws = new WebSocket(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws?role=dashboard`);
+  ws = new WebSocket(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws?role=dashboard&window=1`);   // the server lives as long as this connection
   ws.onmessage = (e) => {
     const m = JSON.parse(e.data);
     if (m.type !== 'state') return;

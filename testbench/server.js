@@ -31,8 +31,9 @@ if (process.env.PC_LOG) {
 
 const HTTP_PORT = 8080, HTTPS_PORT = 8443, UDP_PORT = 9000;
 const PUBLIC = path.join(APP_DIR, 'public');
-const RESULTS = path.join(DATA_DIR, 'results');
-fs.mkdirSync(RESULTS, { recursive: true });
+const RESULTS = path.join(DATA_DIR, 'results');   // made only if a latency run is actually saved
+fs.rmSync(path.join(DATA_DIR, 'cert.json'), { force: true });   // left by older versions, unused
+try { fs.rmdirSync(RESULTS); } catch {}                         // only succeeds when empty
 
 let rtc = null;
 try {
@@ -351,7 +352,7 @@ function onText(s, msg) {
       break;
     case 'run': {
       const run = { ...msg.run, at: new Date().toISOString(), client: s.id, iface: s.iface, secure: s.secure, ua: s.ua };
-      fs.appendFile(path.join(RESULTS, 'runs.jsonl'), JSON.stringify(run) + '\n', () => {});
+      fs.mkdir(RESULTS, { recursive: true }, () => fs.appendFile(path.join(RESULTS, 'runs.jsonl'), JSON.stringify(run) + '\n', () => {}));
       broadcast({ type: 'run', run });
       break;
     }
@@ -417,15 +418,16 @@ function startRtc(s, sdp) {
 function attachWs(wss) {
   wss.on('connection', (ws, req) => {
     req.socket.setNoDelay(true);
-    const role = new URL(req.url, 'http://x').searchParams.get('role');
+    const params = new URL(req.url, 'http://x').searchParams, role = params.get('role');
     if (role === 'dashboard') {
-      const manager = isManager(req);
+      const manager = isManager(req), appWindow = manager && params.get('window') === '1';
       dashboards.add(ws);
+      if (appWindow) windowOpened();
       ws.on('message', (data) => {
         if (!manager) return;
         try { onManager(JSON.parse(data)); } catch {}
       });
-      ws.on('close', () => dashboards.delete(ws));
+      ws.on('close', () => { dashboards.delete(ws); if (appWindow) windowClosed(); });
       return;
     }
     const s = newSession(ws, req);
@@ -558,11 +560,30 @@ console.log(`  Manager (this laptop): http://localhost:${HTTP_PORT}/app`);
 for (const i of interfaces()) console.log(`  Phone via ${i.name.padEnd(28)} https://${i.address}:${HTTPS_PORT}/`);
 console.log(`  Data: ${DATA_DIR}\n`);
 
+// The app window is the app: when PhoneController.exe started us, we live exactly as long as it does.
+// However the window goes (closed, crashed, Edge killed) its connection drops, so nothing has to watch it.
+const EXIT_WITH_WINDOW = !!process.env.PC_EXIT_WITH_WINDOW;
+const RELOAD_GRACE_MS = 3000;       // a reload or a reconnect isn't a close
+const FIRST_WINDOW_MS = 60000;      // never orphaned, even if the window never manages to open
+let openWindows = 0, exitTimer = null;
+function exitAfter(ms) {
+  clearTimeout(exitTimer);
+  exitTimer = setTimeout(shutdown, ms);
+}
+function windowOpened() { openWindows++; clearTimeout(exitTimer); }
+function windowClosed() { if (--openWindows === 0 && EXIT_WITH_WINDOW) exitAfter(RELOAD_GRACE_MS); }
+if (EXIT_WITH_WINDOW) exitAfter(FIRST_WINDOW_MS);
+
+let stopping = false;
 function shutdown() {
-  for (const s of clients.values()) { releaseMouse(s); s.ws.close(); }
-  vigem.stopBridge();
-  network.stopNetwork();
+  if (stopping) return;
+  stopping = true;
+  for (const s of clients.values()) { releaseMouse(s); releaseKeys(s); s.ws.close(); }
+  vigem.stopBridge();     // unplugs the virtual controllers
+  network.stopNetwork();  // takes the hotspot down
   rtc?.cleanup();
+  // A clean exit leaves no log. A crash keeps it, because that's when it's needed.
+  if (process.env.PC_LOG) fs.rmSync(path.join(DATA_DIR, 'server.log'), { force: true });
   setTimeout(() => process.exit(0), 300);
 }
-process.on('SIGINT', shutdown);
+for (const signal of ['SIGINT', 'SIGTERM', 'SIGBREAK']) process.on(signal, shutdown);

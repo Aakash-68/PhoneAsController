@@ -25,6 +25,10 @@ Tilt steering and controller motion need a secure page, which browsers require f
 
 **If the phone won't open the page on the hotspot:** Android may keep using mobile data because the hotspot has no internet. Choose to stay connected when it warns you, or turn mobile data off.
 
+## Closing it
+
+Closing the PhoneController window stops everything within a few seconds: phones disconnect, and the hotspot, the network ports and all helper programs are gone. Nothing runs in the background or at startup. Only your settings stay on disk (hotspot name and password, phone names and colours). The controller driver stays installed but idle until you uninstall it.
+
 ## Use it as a mouse
 
 1. In the PhoneController window, turn on **Phone can be the mouse**.
