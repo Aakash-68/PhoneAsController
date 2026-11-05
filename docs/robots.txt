@@ -26,4 +26,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/sitemap.xml
+Sitemap: https://aakash-68.github.io/PhoneAsController/sitemap.xml

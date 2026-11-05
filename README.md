@@ -89,7 +89,11 @@ Commit the new `Install.exe`, so GitHub's Download ZIP includes it, and attach `
 
 ## Website
 
-The landing page is in `docs/`. To publish it, turn on GitHub Pages for the `main` branch's `/docs` folder under **Settings → Pages**. The site's address and download link assume the repository is named `PhoneAsController`.
+The landing page is in `docs/` and is live at https://aakash-68.github.io/PhoneAsController/, served from the `gh-pages` branch. To publish changes, commit them to `main`, then run:
+
+```
+git subtree push --prefix docs origin gh-pages
+```
 
 ## Third-party software
 

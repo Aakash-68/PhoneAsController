@@ -15,6 +15,6 @@
 
 ## Links
 
-- [Website](https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/): features, install steps and questions
-- [Download](https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/archive/refs/heads/main.zip): repository zip containing Install.exe
-- [README](https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/blob/main/README.md): full instructions and how it works
+- [Website](https://aakash-68.github.io/PhoneAsController/): features, install steps and questions
+- [Download](https://github.com/Aakash-68/PhoneAsController/archive/refs/heads/main.zip): repository zip containing Install.exe
+- [README](https://github.com/Aakash-68/PhoneAsController/blob/main/README.md): full instructions and how it works
