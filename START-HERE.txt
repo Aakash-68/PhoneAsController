@@ -31,5 +31,9 @@ USE THE PHONE AS A TRACKPAD
    swipe left or right to change desktops.
    Change the speed under the Mouse tab on the phone's home screen.
 
+CLOSING IT
+Close the PhoneController window. Phones disconnect, the hotspot goes away and nothing
+keeps running in the background.
+
 REMOVE
 Windows Settings > Apps > Installed apps > PhoneController > Uninstall.
