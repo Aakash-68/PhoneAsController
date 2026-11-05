@@ -4,7 +4,7 @@
 
 ## Key facts
 
-- PC: Windows 10 or 11, 64-bit. Download is a 47 MB zip; 113 MB once installed.
+- PC: Windows 10 or 11, 64-bit. Download is a 48 MB zip; 113 MB once installed.
 - Phone: Android with Chrome. Built and tested mainly on a Samsung Galaxy S22 Ultra. iPhones have not been tested.
 - Connection: the laptop's password-protected Wi-Fi hotspot (default), USB tethering, or a shared Wi-Fi network.
 - Aeroplane mode: the hotspot needs the laptop's Wi-Fi on, which Windows allows during aeroplane mode.
