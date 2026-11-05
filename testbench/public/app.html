@@ -26,14 +26,10 @@
   <aside class="left">
     <section class="tile join">
       <div class="nets" id="netTabs"></div>
-      <div class="nets steps2 hidden" id="joinSteps"><button data-step="1">1 Join Wi-Fi</button><button data-step="2">2 Open app</button></div>
       <div class="qr" id="qrWrap"><div id="qrBox"></div></div>
       <div class="term" id="qrUrl">–</div>
-      <div class="creds hidden" id="hsCreds">
-        <div><span class="lbl">Network</span><b class="num" id="hsSsid"></b></div>
-        <div><span class="lbl">Password</span><b class="num" id="hsPass"></b></div>
-      </div>
       <p class="sub help" id="joinHelp"></p>
+      <button class="key hidden" id="addPhone">ADD A PHONE</button>
       <div class="line"><span>New phones</span><button class="tgl" id="allowJoins" title="Turn off to stop new phones joining"><i></i></button></div>
       <div class="line"><span>Phone can be the mouse</span><button class="tgl" id="mouseAllow2" title="Lets phones move this laptop's mouse and press keys"><i></i></button></div>
     </section>
@@ -51,9 +47,36 @@
   <!-- ===================== DEVICES ===================== -->
   <section class="tile main" id="mainDevices">
     <div class="empty" id="empty">
-      <img src="icon-192.png" alt="">
-      <h2>No phones yet</h2>
-      <p>Scan the codes on the left with your phone's camera.<br>No internet or router needed: the laptop makes its own Wi-Fi hotspot, or use a USB cable.</p>
+      <button class="chipbtn hidden" id="joinClose">Close</button>
+      <div class="hsteps hidden" id="hsSteps">
+        <div class="hstep">
+          <span class="lbl">Step 1</span>
+          <h3>Join the laptop's Wi-Fi</h3>
+          <div class="qr"><div id="qrWifi"></div></div>
+          <div class="creds">
+            <div><span class="lbl">Network</span><b class="num" id="hsSsid"></b></div>
+            <div><span class="lbl">Password</span><b class="num" id="hsPass"></b></div>
+          </div>
+          <p>Scan with your phone's camera and tap Join. If it warns about no internet, choose to stay connected.</p>
+        </div>
+        <svg class="harrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M3 12h40M33 3l10 9-10 9"/></svg>
+        <div class="hstep">
+          <span class="lbl">Step 2</span>
+          <h3>Open the controller</h3>
+          <div class="qr"><div id="qrApp"></div></div>
+          <div class="term" id="hsName"></div>
+          <p>Scan, or type this address in the phone's browser. On the security warning tap Advanced, then Proceed. <span id="hsIp"></span></p>
+        </div>
+      </div>
+      <div class="hsnote hidden" id="hsNote">
+        <p id="hsNoteText"></p>
+        <button class="key orange hidden" id="wifiOn">TURN ON WI-FI</button>
+      </div>
+      <div class="nophones">
+        <img src="icon-192.png" alt="">
+        <h2>No phones yet</h2>
+        <p id="emptyText"></p>
+      </div>
     </div>
 
     <div class="head">

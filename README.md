@@ -15,7 +15,7 @@ Requires Windows 10 or 11, 64-bit.
 
 | | How | Needs |
 |---|---|---|
-| **Hotspot** (default) | The laptop makes its own password-protected Wi-Fi. Scan **1 Join Wi-Fi**, then **2 Open app**, in the PhoneController window. | Laptop's Wi-Fi switched on. It doesn't have to be connected to anything. |
+| **Hotspot** (default) | The laptop makes its own password-protected Wi-Fi. Scan the **Step 1** code to join it, then the **Step 2** code to open the controller, or type `https://phonepad.local` (Android 13+). | Laptop's Wi-Fi switched on, which Windows allows during aeroplane mode. It doesn't have to be connected to anything. |
 | **USB cable** | Plug in, turn on **USB tethering** on the phone, then scan the code under **USB cable**. | A data cable. No mobile data is used. |
 | **Same Wi-Fi** | Scan the code under **Wi-Fi**. | A network both devices are already on. |
 
@@ -41,6 +41,7 @@ Windows **Settings → Apps → Installed apps → PhoneController → Uninstall
 |---|---|
 | `testbench/` | The app's server (Node) and web pages. The name is historical: it started as the latency test bench. |
 | `testbench/network.js` | Hotspot control, network detection |
+| `testbench/hotspotname.js` | `phonepad.local` (mDNS) and port 443, on the hotspot only |
 | `testbench/public/tablemouse.js` | Table mouse tracking (no DOM; `testbench/tools/tablemouse-test.js` tests it against simulated sensors) |
 | `testbench/public/app.*` | Manager window |
 | `testbench/public/index.html`, `phone.css`, `hud.js`, `mouse.js`, `pad.js`, `wheel.js`, `keys.js` | Phone pages |

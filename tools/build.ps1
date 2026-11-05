@@ -28,7 +28,7 @@ Copy-Item (Get-Command node).Source "$out\runtime\node.exe"
 
 Write-Host '4/6 server + phone pages'
 if (-not (Test-Path "$tb\node_modules")) { Push-Location $tb; & npm ci --omit=dev --no-audit --no-fund | Out-Null; Pop-Location; if ($LASTEXITCODE) { throw 'npm ci failed' } }
-foreach ($f in 'server.js', 'paths.js', 'players.js', 'setup.js', 'vigem.js', 'network.js', 'package.json') { Copy-Item "$tb\$f" "$out\app\" }
+foreach ($f in 'server.js', 'paths.js', 'players.js', 'setup.js', 'vigem.js', 'network.js', 'hotspotname.js', 'package.json') { Copy-Item "$tb\$f" "$out\app\" }
 Copy-Item -Recurse "$tb\public" "$out\app\public"
 Copy-Item -Recurse "$tb\node_modules" "$out\app\node_modules"
 # Native modules ship builds for every OS; keep only Windows x64.

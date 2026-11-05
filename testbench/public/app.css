@@ -25,10 +25,7 @@ body.mgr { background: var(--base); overflow: hidden; }
 .mgr .join .line { display: flex; align-items: center; justify-content: space-between; font-size: 11px; }
 .mgr .join .help { margin: 0; font-size: 10.5px; line-height: 1.35; }
 .mgr .join .hidden { display: none; }
-.mgr .join .creds { display: grid; gap: 4px; }
-.mgr .join .creds > div { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; min-width: 0; }
-.mgr .join .creds b { font-size: 11px; font-weight: 500; user-select: all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mgr .join .steps2 button { flex: 1; }
+.mgr .join > .key { align-self: stretch; }
 .mgr .hsform { align-items: flex-end; flex-wrap: wrap; }
 .mgr .hsform label { flex: 1 1 180px; display: flex; flex-direction: column; gap: 5px; }
 .mgr .hsform input { font: 400 12px var(--mono); padding: 8px 10px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); box-shadow: var(--sink-sm); min-width: 0; }
@@ -119,7 +116,25 @@ body.mgr { background: var(--base); overflow: hidden; }
 
 /* empty state */
 .mgr .empty { display: none; position: absolute; inset: 0; z-index: 3; place-content: center; text-align: center; background: inherit; border-radius: inherit; }
-.mgr .main.none .empty { display: grid; }
+.mgr .main.none .empty, .mgr .main.joining .empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 16px; box-sizing: border-box; overflow: auto; }
+.mgr .main.joining .nophones { display: none; }
+.mgr .empty .hidden { display: none; }
+.mgr #joinClose { position: absolute; top: 16px; right: 16px; }
+.mgr .hsteps { display: flex; align-items: flex-start; justify-content: center; gap: 18px; flex: none; }
+.mgr .hstep { width: 270px; display: flex; flex-direction: column; align-items: stretch; gap: 8px; text-align: left; }
+.mgr .hstep h3 { margin: 0; font-size: 17px; font-weight: 400; }
+.mgr .hstep .qr { width: clamp(130px, 27vh, 220px); aspect-ratio: 1; align-self: center; box-sizing: border-box; padding: 10px; flex: none; }
+.mgr .hstep .qr > div { width: 100%; height: 100%; box-sizing: border-box; padding: 6px; }
+.mgr .hstep .term { font-size: 12px; padding: 8px 6px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: all; }
+.mgr .hstep .creds { display: grid; gap: 4px; min-height: 34px; }
+.mgr .hstep .creds > div { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; min-width: 0; }
+.mgr .hstep .creds b { font-size: 12px; font-weight: 500; user-select: all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mgr .hstep p { font-size: 12px; line-height: 1.45; }
+.mgr .harrow { width: 44px; flex: none; margin-top: clamp(110px, 18vh, 170px); fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mgr .hsnote { display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 460px; }
+.mgr .nophones { display: flex; flex-direction: column; align-items: center; flex: none; }
+.mgr .main:has(.hsteps:not(.hidden)) .nophones img { width: 56px; height: 56px; border-radius: 16px; }
+@media (max-width: 1000px) { .mgr .hsteps { flex-direction: column; align-items: center; } .mgr .harrow { margin-top: 0; transform: rotate(90deg); } }
 .mgr .empty img { width: 88px; height: 88px; margin: 0 auto 10px; border-radius: 24px; box-shadow: var(--raise); }
 .mgr .empty h2 { margin: 6px 0; font-size: 22px; font-weight: 300; }
 .mgr .empty p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }

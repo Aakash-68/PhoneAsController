@@ -21,6 +21,7 @@ import * as vigem from './vigem.js';
 import * as players from './players.js';
 import * as setup from './setup.js';
 import * as network from './network.js';
+import { HOTSPOT_NAME, front, syncHotspotName } from './hotspotname.js';
 
 // Started hidden by PhoneController.exe: no console, so log to a file instead.
 if (process.env.PC_LOG) {
@@ -101,8 +102,10 @@ async function handle(req, res) {
   if (url.pathname === '/api/ping') return json(res, 200, { ok: true, app: 'PhoneController' });
   if (url.pathname === '/api/info') {
     const ifs = await Promise.all(interfaces().map(async (i) => {
-      const httpUrl = `http://${i.address}:${HTTP_PORT}/`, httpsUrl = `https://${i.address}:${HTTPS_PORT}/`;
-      return { ...i, httpUrl, httpsUrl, qrHttp: await qr(httpUrl), qrHttps: await qr(httpsUrl) };
+      const noPort = i.kind === 'hotspot' && front.https;
+      const httpUrl = `http://${i.address}:${HTTP_PORT}/`, httpsUrl = noPort ? `https://${i.address}/` : `https://${i.address}:${HTTPS_PORT}/`;
+      const nameUrl = i.kind === 'hotspot' && front.mdns ? (noPort ? `https://${HOTSPOT_NAME}` : `https://${HOTSPOT_NAME}:${HTTPS_PORT}`) : null;
+      return { ...i, httpUrl, httpsUrl, nameUrl, qrHttp: await qr(httpUrl), qrHttps: await qr(httpsUrl) };
     }));
     return json(res, 200, { interfaces: ifs, rtc: !!rtc, udpPort: UDP_PORT, palette: players.PALETTE });
   }
@@ -456,7 +459,7 @@ setInterval(() => {
 // ---------- virtual controllers ----------
 vigem.setFeedbackHandler((s, fb) => { if (players.settings.rumble !== false) sendTo(s, { type: 'rumble', ...fb }); });
 vigem.startBridge();
-network.startNetwork();
+network.startNetwork(() => syncHotspotName(hotspotAddress(), onTlsConnection));
 setInterval(() => vigem.watchdog(clients.values(), now()), 50);
 setup.warmUp();
 
@@ -480,17 +483,20 @@ const contexts = new Map();                 // ip -> Promise<SecureContext>
 
 async function issue(ip) {
   const saved = certs[ip];
-  if (saved && new Date(saved.expires) > new Date(Date.now() + 86400e3)) return saved;
-  const altNames = ip === '127.0.0.1' ? [{ type: 2, value: 'localhost' }, { type: 7, ip }] : [{ type: 7, ip }];
+  const dns = ip === '127.0.0.1' ? 'localhost' : ip === hotspotAddress() ? HOTSPOT_NAME : null;
+  const sameNames = ip === '127.0.0.1' || (saved?.dns ?? null) === dns;
+  if (saved && sameNames && new Date(saved.expires) > new Date(Date.now() + 86400e3)) return saved;
+  const altNames = dns ? [{ type: 2, value: dns }, { type: 7, ip }] : [{ type: 7, ip }];
   const pems = await selfsigned.generate([{ name: 'commonName', value: `PhoneController ${ip}` }], {
     days: 825, keyType: 'ec', extensions: [{ name: 'subjectAltName', altNames }],
   });
   delete certs[ip];
-  certs[ip] = { key: pems.private, cert: pems.cert, expires: new Date(Date.now() + 820 * 86400e3).toISOString() };
+  certs[ip] = { key: pems.private, cert: pems.cert, dns, expires: new Date(Date.now() + 820 * 86400e3).toISOString() };
   for (const old of Object.keys(certs)) { if (Object.keys(certs).length <= MAX_CERTS) break; delete certs[old]; }
   writeJson('certs.json', certs);
   return certs[ip];
 }
+function hotspotAddress() { return interfaces().find((i) => i.kind === 'hotspot')?.address ?? null; }
 function contextFor(address) {
   const ip = (address ?? '127.0.0.1').replace(/^::ffff:/, '');
   if (!contexts.has(ip)) contexts.set(ip, issue(ip).then(({ key, cert }) => tls.createSecureContext({ key, cert })));
@@ -500,7 +506,7 @@ function contextFor(address) {
 // ---------- start ----------
 const httpServer = http.createServer(handle);
 const httpsServer = http.createServer(handle);   // fed decrypted connections by tlsFront
-const tlsFront = net.createServer({ pauseOnConnect: true, noDelay: true }, async (raw) => {
+async function onTlsConnection(raw) {
   raw.on('error', () => {});
   try {
     const secureContext = await contextFor(raw.localAddress);
@@ -512,7 +518,8 @@ const tlsFront = net.createServer({ pauseOnConnect: true, noDelay: true }, async
     console.warn(`[https] ${e.message}`);
     raw.destroy();
   }
-});
+}
+const tlsFront = net.createServer({ pauseOnConnect: true, noDelay: true }, onTlsConnection);
 attachWs(new WebSocketServer({ server: httpServer, path: '/ws', perMessageDeflate: false }));
 attachWs(new WebSocketServer({ server: httpsServer, path: '/ws', perMessageDeflate: false }));
 httpServer.on('error', (e) => { console.error(`[http] ${e.message}`); process.exit(1); });

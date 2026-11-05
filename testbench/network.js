@@ -12,12 +12,12 @@ import { settings, saveSettings } from './players.js';
 
 const RETRY_MS = 5000;   // the hotspot can drop on sleep/resume or while Wi-Fi is turned off
 const REASON = {
-  RadioNotAvailable: 'Wi-Fi is turned off on this laptop. Turn Wi-Fi on (no network needed) and it starts by itself.',
+  RadioNotAvailable: 'Wi-Fi is off on this laptop, or it is in aeroplane mode. The hotspot needs Wi-Fi on, but no network or internet.',
   ResourceInUse: 'Another app is using the Wi-Fi adapter for its own hotspot. Close it, or turn off Mobile hotspot in Windows Settings.',
 };
 
-export const hotspot = { status: 'off', error: null };   // off | starting | on | error
-let proc = null, nets = null, retry = null;
+export const hotspot = { status: 'off', error: null, radioOff: false };   // status: off | starting | on | error
+let proc = null, nets = null, retry = null, radioIsOff = false;
 
 // ---------- credentials ----------
 // No look-alike characters, so the password can also be typed from the screen.
@@ -60,6 +60,7 @@ export function startNetwork(onChange = () => {}) {
       if (line.startsWith('NET ')) {
         try { nets = JSON.parse(line.slice(4)); onChange(); } catch {}
       } else if (line.startsWith('HOTSPOT ')) onHotspot(line.slice(8));
+      else if (line.startsWith('RADIO ')) onRadio(line.slice(6));
     }
   });
   proc.on('exit', () => { proc = null; nets = null; if (hotspot.status !== 'off') Object.assign(hotspot, { status: 'error', error: 'The hotspot helper stopped.' }); });
@@ -67,15 +68,31 @@ export function startNetwork(onChange = () => {}) {
 }
 
 function onHotspot(text) {
-  if (text === 'started') { Object.assign(hotspot, { status: 'on', error: null }); console.log(`[net] hotspot on: ${creds().ssid}`); return; }
+  if (radioIsOff) return;   // can't be running, whatever Windows reports while the radio goes down
+  if (text === 'started') { Object.assign(hotspot, { status: 'on', error: null, radioOff: false }); console.log(`[net] hotspot on: ${creds().ssid}`); return; }
   if (text === 'stopped') {
     if (hotspot.status === 'on') scheduleRetry();   // we didn't ask for this: Windows dropped it
     return;
   }
   const reason = text.replace(/^error\s*/, '');
-  Object.assign(hotspot, { status: 'error', error: REASON[reason] ?? `Windows could not start the hotspot (${reason}). USB cable still works.` });
+  Object.assign(hotspot, { status: 'error', radioOff: reason === 'RadioNotAvailable', error: REASON[reason] ?? `Windows could not start the hotspot (${reason}). USB cable still works.` });
   console.warn(`[net] hotspot: ${reason}`);
   scheduleRetry();
+}
+function onRadio(text) {
+  if (text === 'off') {
+    radioIsOff = true;
+    clearTimeout(retry);
+    if (settings.hotspot?.wanted) Object.assign(hotspot, { status: 'error', radioOff: true, error: REASON.RadioNotAvailable });
+    return;
+  }
+  if (text === 'on') {
+    const was = radioIsOff;
+    radioIsOff = false;
+    if (was && settings.hotspot?.wanted) startHotspot();   // Wi-Fi came back, by our button or the taskbar's
+    return;
+  }
+  hotspot.error = `Windows would not turn Wi-Fi on (${text.replace(/^failed\s*/, '')}). Turn it on from the Wi-Fi button in the taskbar: it can stay on during aeroplane mode.`;
 }
 function scheduleRetry() {
   clearTimeout(retry);
@@ -86,19 +103,21 @@ export function startHotspot() {
   const c = creds();
   if (!c.wanted) { c.wanted = true; saveSettings(); }
   clearTimeout(retry);
-  hotspot.status = 'starting';
+  if (radioIsOff) { Object.assign(hotspot, { status: 'error', radioOff: true, error: REASON.RadioNotAvailable }); return; }
+  Object.assign(hotspot, { status: 'starting', error: null, radioOff: false });
   send('start', c.ssid, c.pass);
 }
 export function stopHotspot() {
   const c = creds();
   if (c.wanted) { c.wanted = false; saveSettings(); }
   clearTimeout(retry);
-  Object.assign(hotspot, { status: 'off', error: null });
+  Object.assign(hotspot, { status: 'off', error: null, radioOff: false });
   send('stop');
 }
 
 // Manager's hotspot form. Returns an error message, or null when applied.
-export function changeHotspot({ on, ssid, pass, regenerate, auto }) {
+export function changeHotspot({ on, ssid, pass, regenerate, auto, wifiOn }) {
+  if (wifiOn) { send('wifi-on'); return null; }
   const c = creds();
   let restart = false;
   if (ssid !== undefined && ssid !== c.ssid) {

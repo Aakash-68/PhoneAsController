@@ -3,9 +3,10 @@
 // the server never has to poll. The hotspot needs no internet, router or existing Wi-Fi connection:
 // it is a Wi-Fi Direct group in "legacy" mode, which phones see as a normal WPA2 network.
 //
-// stdin lines:   start <newline> ssid <newline> password   |   stop
+// stdin lines:   start <newline> ssid <newline> password   |   stop   |   wifi-on
 // stdout lines:  NET [{"ip","name","desc","kind"},...]     (kind: hotspot usb wifi ethernet other)
 //                HOTSPOT started | stopped | error <reason>
+//                RADIO on | off | failed <reason>     (Wi-Fi radio: reported at start and on every change)
 // The hotspot lives only as long as this process; it exits when the server closes stdin.
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using Windows.Devices.Radios;
 using Windows.Devices.WiFiDirect;
 using Windows.Security.Credentials;
 
@@ -26,6 +28,7 @@ static class NetHelper
     static readonly object outLock = new();
     static string lastNet = "";
     static StreamWriter stdout = StreamWriter.Null;
+    static Radio? wifiRadio;   // held so its StateChanged event stays alive
 
     public static int Run()
     {
@@ -36,6 +39,7 @@ static class NetHelper
         NetworkChange.NetworkAddressChanged += (_, _) => ReportNet();
         NetworkChange.NetworkAvailabilityChanged += (_, _) => ReportNet();
         ReportNet();
+        WatchRadio();
         string? cmd;
         while ((cmd = stdin.ReadLine()) != null)
         {
@@ -46,6 +50,7 @@ static class NetHelper
                 Start(ssid, pass);
             }
             else if (cmd == "stop") Stop();
+            else if (cmd == "wifi-on") WifiOn();
         }
         Stop();
         return 0;
@@ -84,6 +89,42 @@ static class NetHelper
         publisher = null;
         try { pub?.Stop(); } catch { }
         if (pub != null) Say("HOTSPOT stopped");
+    }
+
+    // Windows doesn't tell the hotspot when the radio goes off (aeroplane mode), so watch the radio itself.
+    static void WatchRadio()
+    {
+        try
+        {
+            Radio.RequestAccessAsync().AsTask().Wait();
+            wifiRadio = Radio.GetRadiosAsync().AsTask().Result.FirstOrDefault((r) => r.Kind == RadioKind.WiFi);
+            if (wifiRadio == null) return;
+            wifiRadio.StateChanged += (_, _) => SayRadio();
+            SayRadio();
+        }
+        catch (Exception e) { Console.Error.WriteLine($"radio: {(e.InnerException ?? e).Message}"); }
+    }
+
+    static void SayRadio()
+    {
+        var state = wifiRadio?.State;
+        if (state == RadioState.On) Say("RADIO on");
+        else if (state == RadioState.Off || state == RadioState.Disabled) Say("RADIO off");
+    }
+
+    // Only ever on request: the app must not transmit by itself while the laptop is in aeroplane mode.
+    static void WifiOn()
+    {
+        try
+        {
+            if (wifiRadio == null) { Say("RADIO failed no Wi-Fi adapter found"); return; }
+            var result = wifiRadio.SetStateAsync(RadioState.On).AsTask().Result;
+            if (result != RadioAccessStatus.Allowed) Say($"RADIO failed {result}");
+        }
+        catch (Exception e)
+        {
+            Say($"RADIO failed {(e.InnerException ?? e).Message.Replace('\r', ' ').Replace('\n', ' ')}");
+        }
     }
 
     static readonly Regex Virtual = new("Hyper-V|VMware|VirtualBox|Fortinet|WSL|TAP-|Tailscale|ZeroTier|WireGuard|VPN|Loopback|Bluetooth|Npcap|Docker", RegexOptions.IgnoreCase);

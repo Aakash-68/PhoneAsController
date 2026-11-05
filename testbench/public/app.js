@@ -30,7 +30,7 @@ $('copyAddr').onclick = async () => {
 
 // ---------- join (QR) ----------
 // Three ways in. The hotspot is the default: it needs nothing but the laptop and the phone.
-let hs = null, joinTab = null, joinStep = 1, stepTouched = false;
+let hs = null, joinTab = null, joining = false;
 async function refreshInfo() {
   try {
     const info = await (await fetch('/api/info')).json();
@@ -62,22 +62,12 @@ function renderQr() {
   $('netTabs').querySelectorAll('button').forEach((b) => { b.onclick = () => { joinTab = b.dataset.id; renderQr(); }; });
 
   const isHotspot = joinTab === 'hotspot';
-  $('joinSteps').classList.toggle('hidden', !isHotspot);
-  $('hsCreds').classList.toggle('hidden', !isHotspot || joinStep !== 1);
   let shown = null;
   if (isHotspot) {
     const n = netOf('hotspot');
-    $('joinSteps').querySelectorAll('button').forEach((b) => b.classList.toggle('sel', +b.dataset.step === joinStep));
-    if (!hs || hs.status === 'off') setQr('', '', 'The hotspot is off. Turn it on in Setup.');
-    else if (hs.status === 'error') setQr('', '', hs.error);
-    else if (joinStep === 1) {
-      $('hsSsid').textContent = hs.ssid;
-      $('hsPass').textContent = hs.pass;
-      setQr(hs.qrWifi, '', 'Scan with the phone camera and tap Join. If the phone warns about no internet, choose to stay connected.');
-    } else if (n) {
-      shown = n;
-      setQr(n.qrHttps, hostOf(n), 'Scan to open the controller. On the security warning tap Advanced, then Proceed: this only happens once.');
-    } else setQr('', '', 'Starting the hotspot…');
+    if (n && hs?.status === 'on') shown = n;
+    renderHotspotSteps(n);
+    setQr('', '', '');
   } else if (joinTab === 'usb') {
     const n = netOf('usb');
     if (n) { shown = n; setQr(n.qrHttps, hostOf(n), 'Cable connected. Scan to open the controller.'); }
@@ -86,9 +76,39 @@ function renderQr() {
     const n = nets.find((x) => x.address === joinTab);
     if (n) { shown = n; setQr(n.qrHttps, hostOf(n), `The phone must be on the same ${n.label} network as this laptop.`); }
   }
-  $('addrText').textContent = shown ? hostOf(shown) : isHotspot && hs?.ssid ? hs.ssid : '–';
+  $('addrText').textContent = shown ? shown.nameUrl ?? hostOf(shown) : isHotspot && hs?.ssid ? hs.ssid : '–';
+  renderJoinOverlay();
 }
-$('joinSteps').onclick = (e) => { const b = e.target.closest('button'); if (b) { joinStep = +b.dataset.step; stepTouched = true; renderQr(); } };
+const hsProblem = () => (!hs ? '' : hs.status === 'off' ? 'The hotspot is off. Turn it on in Setup.' : hs.status === 'error' ? hs.error : 'Starting the hotspot…');
+function renderHotspotSteps(n) {
+  const ready = hs?.status === 'on' && !!n;
+  $('hsSteps').classList.toggle('hidden', !ready);
+  $('hsNote').classList.toggle('hidden', ready);
+  $('hsNoteText').textContent = hsProblem();
+  $('wifiOn').classList.toggle('hidden', !hs?.radioOff);
+  if (!ready) return;
+  $('qrWifi').innerHTML = hs.qrWifi;
+  $('qrApp').innerHTML = n.qrHttps;
+  $('hsSsid').textContent = hs.ssid;
+  $('hsPass').textContent = hs.pass;
+  $('hsName').textContent = n.nameUrl ?? n.httpsUrl.replace(/\/$/, '');
+  $('hsIp').textContent = n.nameUrl ? `If that address doesn't open, use ${n.httpsUrl.replace(/\/$/, '')}.` : '';
+}
+// With phones connected the main panel shows them, so the steps open on request for the next phone.
+function renderJoinOverlay() {
+  const hotspotTab = joinTab === 'hotspot';
+  const hasPhones = clients.some((c) => c.player);
+  if (!hotspotTab || !hasPhones) joining = false;
+  $('mainDevices').classList.toggle('joining', joining);
+  $('joinClose').classList.toggle('hidden', !joining);
+  $('addPhone').classList.toggle('hidden', !hotspotTab || !hasPhones);
+  $('joinHelp').classList.toggle('hidden', !$('joinHelp').textContent);
+  $('emptyText').textContent = hotspotTab ? 'No internet or router needed: the laptop makes its own Wi-Fi hotspot.' : 'Follow the instructions on the left to connect a phone.';
+  if (!hotspotTab) { $('hsSteps').classList.add('hidden'); $('hsNote').classList.add('hidden'); }
+}
+$('addPhone').onclick = () => { document.querySelector('[data-view="devices"]').click(); joining = true; renderJoinOverlay(); };
+$('joinClose').onclick = () => { joining = false; renderJoinOverlay(); };
+$('wifiOn').onclick = () => changeHotspot({ wifiOn: true });
 $('allowJoins').onclick = () => send({ type: 'settings', lockJoins: $('allowJoins').classList.contains('is-on') });
 
 // ---------- hotspot settings ----------
@@ -139,9 +159,8 @@ function renderList() {
     el.querySelector('.p').textContent = p != null ? fmt(p, 0) : '–';
   });
   $('playersLbl').textContent = `Players · ${list.length} / 8`;
-  $('slotsFree').textContent = list.length ? `${8 - list.length} free slots · scan the code to add one` : 'Scan the code with your phone camera';
-  // A phone that got here has clearly joined; the next one is most likely to need step 1 again.
-  if (list.length && !stepTouched) joinStep = 1;
+  $('slotsFree').textContent = list.length ? `${8 - list.length} free slots` : 'Follow the steps to connect a phone';
+  renderJoinOverlay();
 }
 
 // ---------- selected phone ----------
