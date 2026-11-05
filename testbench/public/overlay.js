@@ -1,4 +1,5 @@
 // Fullscreen landscape overlays (pad, wheel, mouse, calibration) + shared helpers.
+import { startKeepAwake, stopKeepAwake } from './keepawake.js';
 import { setMode, onReconnect } from './net.js';
 
 export const $ = (id) => document.getElementById(id);
@@ -37,6 +38,7 @@ export async function openOverlay(el, mode, heartbeat) {
   setMode(mode);
   await enterFullscreen();
   try { wakeLock = await navigator.wakeLock?.request('screen'); } catch {}
+  if (!wakeLock) startKeepAwake();
   if (heartbeat) timer = setInterval(heartbeat, 4);
 }
 
@@ -48,6 +50,7 @@ export function closeOverlay(keepFullscreen = false) {
   timer = null;
   wakeLock?.release();
   wakeLock = null;
+  stopKeepAwake();
   setMode('idle');
   if (!keepFullscreen) exitFullscreen();
 }

@@ -6,7 +6,7 @@
 import { fmt, summarize, now } from './common.js';
 import { $, capture, show, isOpen, MOVE_EVENT, load, save, openOverlay, closeOverlay } from './overlay.js';
 import { gp, sendPad, resetPad, detents } from './gamepad.js';
-import { motion, onMotion } from './motion.js';
+import { motion, onMotion, MOTION_HELP } from './motion.js';
 import { pressure, openPressureWizard } from './pressure.js';
 import { analogValue, keepsOnRelease, followsMoves } from './analog.js';
 import { link, acks } from './net.js';
@@ -258,12 +258,12 @@ renderSettings();
 export function renderWheel() {
   if (!$('view-wheelinfo').classList.contains('hidden') && wheel.source === 'tilt') {
     $('wheelLive').textContent = motion.raw == null
-      ? (isSecureContext ? 'no motion sensor data' : 'motion needs the https page')
+      ? (isSecureContext ? 'no motion sensor data' : MOTION_HELP)
       : `roll ${fmt(motion.raw, 1)}° → steer ${Math.round(steerFromTilt(motion.raw - wheel.zero) * 100)}% (open the wheel to centre it)`;
   }
   if (!isOpen(wheelEl)) return;
   const a = summarize(acks.ackRtt.values());
-  const warn = wheel.source === 'tilt' && motion.raw == null ? ' · tilt needs the motion sensor: open the https address' : '';
+  const warn = wheel.source === 'tilt' && motion.raw == null ? ` · ${MOTION_HELP}` : '';
   $('wheelInfo').textContent = `${link.mode} · ack RTT p50 ${fmt(a?.p50)} ms · gas ${Math.round(gp.r2 * 100)}% · brake ${Math.round(gp.l2 * 100)}%${warn}`;
   renderHud();
   for (const p of Object.values(pedals)) p.el.style.setProperty('--fill', `${p.value * 100}%`);

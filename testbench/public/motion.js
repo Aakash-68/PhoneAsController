@@ -45,3 +45,6 @@ export function motionHz() {
   const s = Float64Array.from(v).sort();
   return 1000 / s[s.length >> 1];
 }
+
+// The phone page is plain http, where Chrome delivers no motion data.
+export const MOTION_HELP = `Tilt needs the secure address: https://${location.hostname}:8443 (tap Advanced, then Proceed).`;

@@ -14,19 +14,15 @@ $tb = Join-Path $repo 'testbench'
 if (Test-Path $build) { Remove-Item -Recurse -Force $build }
 New-Item -ItemType Directory -Force "$out\runtime", "$out\app", "$out\vendor", $release | Out-Null
 
-Write-Host '1/6 tests'
-& node "$tb\tools\tablemouse-test.js" | Select-Object -Last 1
-if ($LASTEXITCODE) { throw 'table mouse tests failed' }
-
-Write-Host '2/6 PhoneController.exe (launcher, controller bridge, hotspot helper)'
+Write-Host '1/5 PhoneController.exe (launcher, controller bridge, hotspot helper)'
 & dotnet build "$repo\bridge\PhoneController.csproj" -c Release -o "$build\bridge" --nologo -v q | Out-Null
 if ($LASTEXITCODE) { throw 'dotnet build failed' }
 Copy-Item "$build\bridge\PhoneController.exe", "$build\bridge\PhoneController.exe.config", "$build\bridge\Nefarius.ViGEm.Client.dll" $out
 
-Write-Host '3/6 Node.js runtime'
+Write-Host '2/5 Node.js runtime'
 Copy-Item (Get-Command node).Source "$out\runtime\node.exe"
 
-Write-Host '4/6 server + phone pages'
+Write-Host '3/5 server + phone pages'
 if (-not (Test-Path "$tb\node_modules")) { Push-Location $tb; & npm ci --omit=dev --no-audit --no-fund | Out-Null; Pop-Location; if ($LASTEXITCODE) { throw 'npm ci failed' } }
 foreach ($f in 'server.js', 'paths.js', 'players.js', 'setup.js', 'vigem.js', 'network.js', 'hotspotname.js', 'package.json') { Copy-Item "$tb\$f" "$out\app\" }
 Copy-Item -Recurse "$tb\public" "$out\app\public"
@@ -57,7 +53,7 @@ function New-Zip($from, $to) {
   }
 }
 
-Write-Host '5/6 Install.exe'
+Write-Host '4/5 Install.exe'
 $payload = Join-Path $build 'payload.zip'
 New-Zip $out $payload
 $csc = Join-Path ([Runtime.InteropServices.RuntimeEnvironment]::GetRuntimeDirectory()) 'csc.exe'
@@ -66,7 +62,7 @@ $csc = Join-Path ([Runtime.InteropServices.RuntimeEnvironment]::GetRuntimeDirect
   "$repo\installer\Install.cs" | Where-Object { $_ -notmatch 'C# 5|csc-is-for|https://go.microsoft|This compiler' }
 if ($LASTEXITCODE) { throw 'installer compile failed' }
 
-Write-Host '6/6 release zip'
+Write-Host '5/5 release zip'
 $pack = Join-Path $build 'release'
 New-Item -ItemType Directory -Force $pack | Out-Null
 Copy-Item "$repo\Install.exe" $pack

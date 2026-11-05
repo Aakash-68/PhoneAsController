@@ -2,7 +2,7 @@
 import { fmt, summarize } from './common.js';
 import { $, capture, show, isOpen, MOVE_EVENT, load, save, openOverlay, closeOverlay, exitFullscreen } from './overlay.js';
 import { gp, sendPad, resetPad, detents, haptics } from './gamepad.js';
-import { motion, onMotion, motionHz } from './motion.js';
+import { motion, onMotion, motionHz, MOTION_HELP } from './motion.js';
 import { openWizard } from './wizard.js';
 import { pressure, openPressureWizard } from './pressure.js';
 import { analogValue, keepsOnRelease, followsMoves } from './analog.js';
@@ -177,7 +177,7 @@ const TILT_STEPS = [
 ].map(([t, pct, hint], i) => ({
   t, pct, hint, title: `${t}2 · ${pct}%`,
   sample: () => motion.raw,
-  ready: () => (motion.raw == null ? 'No motion sensor data: open the https page.' : null),
+  ready: () => (motion.raw == null ? (isSecureContext ? 'No motion sensor data.' : MOTION_HELP) : null),
   describe: (r) => `<b>${fmt(r.value, 1)}°</b> <span class="muted">(±${fmt(r.sd.v, 1)}° wobble)</span>`,
   unsteady: (r) => r.sd.v > 1.5,
   // Each point must be ≥ MIN_GAP further in the trigger's direction than the previous one.
@@ -258,7 +258,7 @@ renderTiltStatus();
 // ---------- render (called every frame) ----------
 export function motionText() {
   const hz = motionHz();
-  if (motion.raw == null) return isSecureContext ? 'no motion sensor data' : 'motion needs the https page';
+  if (motion.raw == null) return isSecureContext ? 'no motion sensor data' : MOTION_HELP;
   const t = tiltValues();
   return `tilt ${fmt(roll(), 0)}° · L2 ${Math.round(t.L * 100)}% · R2 ${Math.round(t.R * 100)}% · sensor ${hz ? fmt(hz, 0) : '–'} Hz`;
 }

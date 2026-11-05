@@ -1,6 +1,6 @@
 // PhoneController server.
-//   HTTP  :8080  phone page, manager (/app), diagnostics (/dashboard), WebSocket /ws
-//   HTTPS :8443  same, self-signed (secure context → raw touch events, motion sensors, fine timers)
+//   HTTP  :8080  phone page (no certificate warning), manager (/app), diagnostics (/dashboard), WebSocket /ws
+//   HTTPS :8443  same, self-signed: an opt-in for tilt, which browsers only allow on a secure page
 //   UDP   :9000  raw echo for the future native Android tester
 // Phones reach it over the laptop's own hotspot, a USB cable or any shared network (network.js).
 // WebRTC DataChannels (unordered, no retransmits = UDP-like) are signalled over /ws.
@@ -65,7 +65,7 @@ const KEYEVENTF = { EXTENDED: 0x1, KEYUP: 0x2 };
 // Keys the phone's keyboard screen may press (Windows virtual-key codes). Anything else is ignored.
 const KEY_OK = new Set([0x08, 0x09, 0x0d, 0x10, 0x11, 0x12, 0x1b, 0x20, 0x25, 0x26, 0x27, 0x28,
   ...Array.from({ length: 10 }, (_, i) => 0x30 + i), ...Array.from({ length: 26 }, (_, i) => 0x41 + i)]);
-const KEY_EXTENDED = new Set([0x25, 0x26, 0x27, 0x28]);
+const KEY_EXTENDED = new Set([0x25, 0x26, 0x27, 0x28, 0x5b]);
 
 // ---------- network helpers ----------
 const { interfaces } = network;
@@ -102,9 +102,9 @@ async function handle(req, res) {
   if (url.pathname === '/api/ping') return json(res, 200, { ok: true, app: 'PhoneController' });
   if (url.pathname === '/api/info') {
     const ifs = await Promise.all(interfaces().map(async (i) => {
-      const noPort = i.kind === 'hotspot' && front.https;
-      const httpUrl = `http://${i.address}:${HTTP_PORT}/`, httpsUrl = noPort ? `https://${i.address}/` : `https://${i.address}:${HTTPS_PORT}/`;
-      const nameUrl = i.kind === 'hotspot' && front.mdns ? (noPort ? `https://${HOTSPOT_NAME}` : `https://${HOTSPOT_NAME}:${HTTPS_PORT}`) : null;
+      const noPort = i.kind === 'hotspot' && front.http;
+      const httpUrl = noPort ? `http://${i.address}/` : `http://${i.address}:${HTTP_PORT}/`, httpsUrl = `https://${i.address}:${HTTPS_PORT}/`;
+      const nameUrl = i.kind === 'hotspot' && front.mdns ? (noPort ? `http://${HOTSPOT_NAME}` : `http://${HOTSPOT_NAME}:${HTTP_PORT}`) : null;
       return { ...i, httpUrl, httpsUrl, nameUrl, qrHttp: await qr(httpUrl), qrHttps: await qr(httpsUrl) };
     }));
     return json(res, 200, { interfaces: ifs, rtc: !!rtc, udpPort: UDP_PORT, palette: players.PALETTE });
@@ -231,6 +231,20 @@ function applyKey(s, b) {
   keyEvent(vk, down);
   if (down) { s.keys.add(vk); s.keyPresses++; } else s.keys.delete(vk);
 }
+// Trackpad gestures. Only these exact combinations: the phone names one, it can't send Windows-key
+// presses of its own. Pressed and released together, so the Windows key can't be left stuck down.
+const SHORTCUTS = new Map([
+  ['task-view', [0x5b, 0x09]],            // Win+Tab: all open windows
+  ['show-desktop', [0x5b, 0x44]],         // Win+D: show the desktop; again brings the windows back
+  ['desktop-next', [0x11, 0x5b, 0x27]],   // Ctrl+Win+Right
+  ['desktop-prev', [0x11, 0x5b, 0x25]],   // Ctrl+Win+Left
+]);
+function applyShortcut(s, name) {
+  const keys = SHORTCUTS.get(name);
+  if (!keys || !mouseAllowed || !keybdEvent || s.mode !== 'mouse') return;
+  for (const vk of keys) keyEvent(vk, true);
+  for (const vk of [...keys].reverse()) keyEvent(vk, false);
+}
 // Never leave a key held down when a phone leaves the keyboard screen or disconnects.
 function releaseKeys(s) {
   if (!keybdEvent) return;
@@ -319,6 +333,9 @@ function onText(s, msg) {
     }
     case 'reset':
       s.oneWay.clear(); s.pipeline.clear(); s.rate.clear(); s.inputs = 0; s.pings = 0;
+      break;
+    case 'shortcut':
+      applyShortcut(s, msg.name);
       break;
     case 'transport':
       s.transport = msg.transport;
@@ -459,7 +476,7 @@ setInterval(() => {
 // ---------- virtual controllers ----------
 vigem.setFeedbackHandler((s, fb) => { if (players.settings.rumble !== false) sendTo(s, { type: 'rumble', ...fb }); });
 vigem.startBridge();
-network.startNetwork(() => syncHotspotName(hotspotAddress(), onTlsConnection));
+network.startNetwork(() => syncHotspotName(hotspotAddress(), (sock) => httpServer.emit('connection', sock)));
 setInterval(() => vigem.watchdog(clients.values(), now()), 50);
 setup.warmUp();
 

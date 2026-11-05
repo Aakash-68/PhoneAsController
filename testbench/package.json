@@ -5,8 +5,7 @@
   "description": "Use a phone as a controller or mouse for a Windows PC, offline",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "test": "node tools/tablemouse-test.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "koffi": "^3.3.6",

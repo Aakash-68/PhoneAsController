@@ -36,7 +36,7 @@
     <section class="tiles">
       <button class="tile" id="padOpen"><i class="ti pad"></i><b>Gamepad</b><small id="padTypeName">Xbox layout</small></button>
       <button class="tile" id="wheelOpen"><i class="ti wheel"></i><b>Wheel</b><small>steer · pedals</small></button>
-      <button class="tile" id="mouseOpen"><i class="ti mouse"></i><b>Mouse</b><small>slide it on the table</small></button>
+      <button class="tile" id="mouseOpen"><i class="ti mouse"></i><b>Mouse</b><small>use it as a trackpad</small></button>
       <button class="tile" id="keysOpen"><i class="ti keys"></i><b>Keyboard</b><small>WASD · your keys</small></button>
     </section>
 
@@ -145,7 +145,7 @@
 
     <!-- ===== Trackpad settings ===== -->
     <section class="view hidden" id="view-mouseinfo">
-      <p class="small muted">1 finger moves · tap = left click · 2-finger tap = right click · 2-finger drag = scroll. Hold L / M / R and drag with another finger.</p>
+      <p class="small muted">1 finger moves · tap = left click · double-tap and keep your finger down = hold the left button and drag · 2-finger tap = right click · 2-finger drag = scroll. 3-finger tap = open windows · 3-finger swipe up = show desktop (again to bring windows back) · 3-finger swipe left / right = next / previous desktop. Hold L / M / R and drag with another finger.</p>
       <p class="warn small mousePerm hidden"></p>
       <div class="card">
         <h3>Feel</h3>
@@ -153,21 +153,6 @@
         <label class="row">Acceleration <input type="range" id="mouseAccel" min="0" max="2" step="0.1"> <b id="mouseAccelV"></b></label>
         <label class="row">Scroll speed <input type="range" id="mouseScrollSpeed" min="1" max="15" step="1"> <b id="mouseScrollSpeedV"></b></label>
         <label class="row"><input type="checkbox" id="mouseNatural"> Natural scrolling</label>
-      </div>
-      <div class="card">
-        <h3>Table mouse</h3>
-        <p class="small muted">Lay the phone flat, screen up, and slide it like a mouse. The big L and R areas are the buttons. Lift it to reposition, just like a real mouse.</p>
-        <label class="row"><input type="checkbox" id="mouseTableOn"> Use the table mouse on the mouse screen</label>
-        <label class="row">Cursor speed <input type="range" id="mouseTableSpeed" min="4" max="48" step="1"> <b id="mouseTableSpeedV"></b></label>
-        <label class="row">Sensitivity <input type="range" id="mouseTableSens" min="0.5" max="2.5" step="0.1"> <b id="mouseTableSensV"></b></label>
-        <p class="small muted">Raise sensitivity if gentle movement is missed; lower it if the cursor twitches. Works best on a hard, smooth surface and with deliberate strokes.</p>
-      </div>
-      <div class="card">
-        <h3>Air mouse</h3>
-        <p class="small muted">Move the phone to move the cursor: turn left / right, tilt up / down. Works held upright or flat like a remote. Tap the pad to click; L / M / R and the scroll strip still work.</p>
-        <label class="row"><input type="checkbox" id="mouseAirOn"> Use the air mouse on the mouse screen</label>
-        <label class="row">Air speed <input type="range" id="mouseAirSpeed" min="10" max="90" step="1"> <b id="mouseAirSpeedV"></b></label>
-        <label class="row"><input type="checkbox" id="mouseAirHold"> Only move while a finger is on the pad (lift to reposition)</label>
       </div>
     </section>
 
@@ -392,9 +377,7 @@
   <div id="mouse" class="overlay ctlr hidden">
     <button class="exit" id="mouseClose" aria-label="Back">‹</button>
     <div class="padinfo" id="mouseInfo">–</div>
-    <div class="seg airseg" id="mouseModeSeg"><button data-v="table">Table</button><button data-v="touch">Touch</button><button data-v="air">Air</button></div>
     <p class="warn small mousePerm hidden permline"></p>
-    <div id="tableState"></div>
     <div id="mouseSurface"><span>trackpad</span></div>
     <div id="mouseScroll"><span>scroll</span></div>
     <div class="mouse-buttons">

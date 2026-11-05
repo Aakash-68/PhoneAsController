@@ -15,21 +15,36 @@ Requires Windows 10 or 11, 64-bit.
 
 | | How | Needs |
 |---|---|---|
-| **Hotspot** (default) | The laptop makes its own password-protected Wi-Fi. Scan the **Step 1** code to join it, then the **Step 2** code to open the controller, or type `https://phonepad.local` (Android 13+). | Laptop's Wi-Fi switched on, which Windows allows during aeroplane mode. It doesn't have to be connected to anything. |
+| **Hotspot** (default) | The laptop makes its own password-protected Wi-Fi. Scan the **Step 1** code to join it, then the **Step 2** code to open the controller, or type `http://phonepad.local` (Android 13+; add `:8080` if the app shows it). | Laptop's Wi-Fi switched on, which Windows allows during aeroplane mode. It doesn't have to be connected to anything. |
 | **USB cable** | Plug in, turn on **USB tethering** on the phone, then scan the code under **USB cable**. | A data cable. No mobile data is used. |
 | **Same Wi-Fi** | Scan the code under **Wi-Fi**. | A network both devices are already on. |
 
-On the phone's first visit to each address, tap **Advanced → Proceed** on the security warning. The app makes its own certificate, because a public one can't exist offline. Motion features need this secure page.
+The phone page is plain HTTP, so it opens with no security warning; Chrome just shows **Not secure** in the address bar. On the hotspot, the Wi-Fi password protects the traffic. On a shared Wi-Fi, other people on that network could read it if the connection falls back from WebRTC to WebSocket, so use the hotspot or USB for anything private typed on the Keyboard screen.
+
+Tilt steering and controller motion need a secure page, which browsers require for motion sensors: open `https://<address>:8443` and tap **Advanced → Proceed** on the warning. The app makes its own certificate, because a public one can't exist offline. Fast touch input and precise timers also need that page, so the plain page can respond slightly later.
 
 **If the phone won't open the page on the hotspot:** Android may keep using mobile data because the hotspot has no internet. Choose to stay connected when it warns you, or turn mobile data off.
 
 ## Use it as a mouse
 
 1. In the PhoneController window, turn on **Phone can be the mouse**.
-2. On the phone open **Mouse** and lay it flat, screen up, on a hard table. Wait for **Ready**.
-3. Slide it like a mouse. The big **L** and **R** areas are the buttons, and the middle strip scrolls. Lift it to reposition, as with a real mouse.
+2. On the phone open **Mouse**.
+3. Use it as a trackpad:
 
-Phones have no mouse sensor, so the table mouse estimates movement from the accelerometer. Deliberate strokes work best. It can't match an optical mouse for slow, precise movement; use **Touch** mode (trackpad) for that. Adjust **Cursor speed** and **Sensitivity** in the phone's Mouse tab.
+| Gesture | Does |
+|---|---|
+| One finger | Move the cursor |
+| Tap | Left click |
+| Double-tap, keep the finger down | Hold the left button and drag |
+| Two-finger tap | Right click |
+| Two-finger drag | Scroll |
+| Three-finger tap | Show all open windows (Task View) |
+| Three-finger swipe up | Show the desktop; again brings the windows back |
+| Three-finger swipe left / right | Next / previous virtual desktop |
+
+You can also hold **L**, **M** or **R** and drag with another finger.
+
+Adjust speed, acceleration and scrolling in the phone's Mouse tab.
 
 ## Remove
 
@@ -41,8 +56,7 @@ Windows **Settings → Apps → Installed apps → PhoneController → Uninstall
 |---|---|
 | `testbench/` | The app's server (Node) and web pages. The name is historical: it started as the latency test bench. |
 | `testbench/network.js` | Hotspot control, network detection |
-| `testbench/hotspotname.js` | `phonepad.local` (mDNS) and port 443, on the hotspot only |
-| `testbench/public/tablemouse.js` | Table mouse tracking (no DOM; `testbench/tools/tablemouse-test.js` tests it against simulated sensors) |
+| `testbench/hotspotname.js` | `phonepad.local` (mDNS) and port 80, on the hotspot only |
 | `testbench/public/app.*` | Manager window |
 | `testbench/public/index.html`, `phone.css`, `hud.js`, `mouse.js`, `pad.js`, `wheel.js`, `keys.js` | Phone pages |
 | `bridge/` | `PhoneController.exe`: launcher, controller bridge (`--bridge`, ViGEm), hotspot helper (`--net`, Wi-Fi Direct) |
@@ -59,7 +73,6 @@ Needs the .NET 8 SDK and Node.js. The .NET runtime isn't needed on target PCs: t
 ```
 dotnet build bridge -c Release -o bridge/out      # once, or after changing bridge/
 cd testbench && npm install && node server.js     # manager: http://localhost:8080/app
-node tools/tablemouse-test.js                     # table mouse tests
 ```
 
 ## Build the download

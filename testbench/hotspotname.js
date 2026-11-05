@@ -1,8 +1,9 @@
-// A friendlier address on the laptop's hotspot: https://phonepad.local, with no port number.
+// A friendlier address on the laptop's hotspot: http://phonepad.local, with no port number.
 //   name   a small mDNS responder. The hotspot gives phones no DNS server, so .local is the only name
 //          a phone can look up there. Android 13+ does this by itself; older phones use the QR code.
-//   port   443, on the hotspot's address only, so web servers the user runs elsewhere are unaffected.
-// Both are extras: :8443 keeps working, and anything that can't start is reported, never fatal.
+//   port   80, on the hotspot's address only, so web servers the user runs elsewhere are unaffected.
+//          IIS and others can already hold it; the address then simply keeps :8080.
+// Both are extras: :8080 keeps working, and anything that can't start is reported, never fatal.
 import dgram from 'node:dgram';
 import net from 'node:net';
 
@@ -11,7 +12,7 @@ export const HOTSPOT_NAME = 'phonepad.local';
 const MDNS_GROUP = '224.0.0.251', MDNS_PORT = 5353, TTL = 120;
 const TYPE_A = 1, TYPE_ANY = 255, CLASS_IN = 1, QU_OR_FLUSH = 0x8000;
 
-export const front = { https: false, mdns: false };   // what is actually up right now
+export const front = { http: false, mdns: false };   // what is actually up right now
 let current = null, tcp = null, udp = null;
 
 const encodeName = (name) => Buffer.concat([...name.split('.').map((l) => Buffer.concat([Buffer.from([l.length]), Buffer.from(l)])), Buffer.from([0])]);
@@ -94,9 +95,9 @@ function startMdns(ip) {
 }
 
 function startTcp(ip, onConnection) {
-  const server = net.createServer({ pauseOnConnect: true, noDelay: true }, onConnection);
-  server.on('error', (e) => { console.warn(`[name] port 443: ${e.message}. The hotspot address keeps :8443.`); front.https = false; });
-  server.listen(443, ip, () => { front.https = true; });
+  const server = net.createServer({ noDelay: true }, onConnection);
+  server.on('error', (e) => { console.warn(`[name] port 80: ${e.message}. The hotspot address keeps :8080.`); front.http = false; });
+  server.listen(80, ip, () => { front.http = true; });
   return server;
 }
 
@@ -107,7 +108,7 @@ export function syncHotspotName(ip, onConnection) {
   tcp?.close();
   try { udp?.close(); } catch {}
   tcp = udp = null;
-  Object.assign(front, { https: false, mdns: false });
+  Object.assign(front, { http: false, mdns: false });
   if (!ip) return;
   tcp = startTcp(ip, onConnection);
   udp = startMdns(ip);

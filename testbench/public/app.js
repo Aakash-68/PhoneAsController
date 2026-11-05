@@ -54,7 +54,7 @@ function setQr(svg, url, help) {
   $('qrUrl').classList.toggle('hidden', !url);
   $('joinHelp').textContent = help;
 }
-const hostOf = (n) => n.httpsUrl.replace(/^https:\/\//, '').replace(/\/$/, '');
+const hostOf = (n) => n.httpUrl.replace(/^http:\/\//, '').replace(/\/$/, '');
 function renderQr() {
   const tabs = joinTabs();
   if (!tabs.some((t) => t.id === joinTab)) joinTab = 'hotspot';
@@ -70,11 +70,11 @@ function renderQr() {
     setQr('', '', '');
   } else if (joinTab === 'usb') {
     const n = netOf('usb');
-    if (n) { shown = n; setQr(n.qrHttps, hostOf(n), 'Cable connected. Scan to open the controller.'); }
+    if (n) { shown = n; setQr(n.qrHttp, hostOf(n), 'Cable connected. Scan to open the controller.'); }
     else setQr('', '', 'Plug the phone in with a USB cable, then on the phone turn on Settings > Connections > Mobile Hotspot and Tethering > USB tethering. The code appears here. No mobile data is used.');
   } else {
     const n = nets.find((x) => x.address === joinTab);
-    if (n) { shown = n; setQr(n.qrHttps, hostOf(n), `The phone must be on the same ${n.label} network as this laptop.`); }
+    if (n) { shown = n; setQr(n.qrHttp, hostOf(n), `The phone must be on the same ${n.label} network as this laptop.`); }
   }
   $('addrText').textContent = shown ? shown.nameUrl ?? hostOf(shown) : isHotspot && hs?.ssid ? hs.ssid : '–';
   renderJoinOverlay();
@@ -88,11 +88,11 @@ function renderHotspotSteps(n) {
   $('wifiOn').classList.toggle('hidden', !hs?.radioOff);
   if (!ready) return;
   $('qrWifi').innerHTML = hs.qrWifi;
-  $('qrApp').innerHTML = n.qrHttps;
+  $('qrApp').innerHTML = n.qrHttp;
   $('hsSsid').textContent = hs.ssid;
   $('hsPass').textContent = hs.pass;
-  $('hsName').textContent = n.nameUrl ?? n.httpsUrl.replace(/\/$/, '');
-  $('hsIp').textContent = n.nameUrl ? `If that address doesn't open, use ${n.httpsUrl.replace(/\/$/, '')}.` : '';
+  $('hsName').textContent = n.nameUrl ?? n.httpUrl.replace(/\/$/, '');
+  $('hsIp').textContent = n.nameUrl ? `If that address doesn't open, use ${n.httpUrl.replace(/\/$/, '')}.` : '';
 }
 // With phones connected the main panel shows them, so the steps open on request for the next phone.
 function renderJoinOverlay() {

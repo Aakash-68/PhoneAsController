@@ -241,8 +241,6 @@ body[data-glyph=ps] .ctlr .fb.on { box-shadow: 0 0 0 1.5px var(--gp); }
 #pad .fb.on .g-xb { color: var(--g); }
 
 /* trackpad: Touch / Air switch; in air mode the pad glows while it's the clutch */
-#mouse .airseg { position: absolute; right: 8px; top: 7px; z-index: 6; width: 150px; }
-#mouse.air #mouseSurface { box-shadow: 0 0 0 1px color-mix(in srgb, var(--player) 45%, var(--line)), inset 0 0 40px color-mix(in srgb, var(--player) 10%, transparent); color: color-mix(in srgb, var(--player) 55%, #3d4047); font-size: 3.6vmin; }
 #mouse .exit { bottom: auto; top: 7px; }
 
 /* ===== wheel screen: wheel in the left corner, pedals + handbrake right, buttons in the middle ===== */
@@ -321,15 +319,3 @@ body[data-glyph=ps] #wheel .fbw.a { color: #7896b5; } body[data-glyph=ps] #wheel
 #wheel.editing .steerseg, #wheel.editing .pillbtn, #wheel.editing .padinfo { visibility: hidden; }
 
 /* Table mouse: the whole screen is the two buttons of a mouse, split by the scroll strip. */
-#tableState { display: none; }
-#mouse.table #tableState { display: block; position: absolute; left: 60px; right: calc(50% + 62px); top: 6px; height: 36px; overflow: hidden; z-index: 6; font-size: 11px; line-height: 1.25; color: var(--muted, #8a8d94); }
-#mouse.table .permline { top: auto; bottom: 16px; left: 24px; right: 24px; pointer-events: none; }
-#mouse.table #tableState.ok { color: color-mix(in srgb, var(--player) 70%, #ffffff); }
-#mouse.table #tableState.bad { color: #e0a06a; }
-#mouse.table #mouseSurface, #mouse.table #mouseBtnM { display: none; }
-#mouse.table .mouse-buttons { top: 46px; bottom: 8px; left: 8px; right: 8px; height: auto; width: auto; display: grid; grid-template-columns: 1fr 9vw 1fr; gap: 8px; position: absolute; }
-#mouse.table #mouseBtnL { grid-column: 1; }
-#mouse.table #mouseBtnR { grid-column: 3; }
-#mouse.table .mbtn { height: auto; display: flex; align-items: center; justify-content: center; font-size: 6vmin; }
-#mouse.table #mouseScroll { top: 46px; bottom: 8px; right: auto; left: calc(50% - 4.5vw); width: 9vw; z-index: 2; }
-#mouse .airseg { width: 190px; }
