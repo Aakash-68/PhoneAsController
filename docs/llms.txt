@@ -1,0 +1,20 @@
+# PhoneAsController
+
+> Free Windows app that turns an Android phone into an Xbox 360 or DualShock 4 controller, racing wheel, keyboard and trackpad. It works with no internet and no router, using the laptop's own Wi-Fi hotspot or a USB cable. Nothing is installed on the phone.
+
+## Key facts
+
+- PC: Windows 10 or 11, 64-bit. Download is a 47 MB zip; 113 MB once installed.
+- Phone: Android with Chrome. Built and tested mainly on a Samsung Galaxy S22 Ultra. iPhones have not been tested.
+- Connection: the laptop's password-protected Wi-Fi hotspot (default), USB tethering, or a shared Wi-Fi network.
+- Aeroplane mode: the hotspot needs the laptop's Wi-Fi on, which Windows allows during aeroplane mode.
+- Controllers: Windows sees a standard Xbox 360 or DualShock 4 controller through the ViGEmBus driver. Some anti-cheat systems may block virtual controllers.
+- Players: up to 8 phones. Many Windows games read at most 4 Xbox controllers.
+- Closing the window stops everything within a few seconds, with nothing left running in the background or at startup.
+- Limits: Install.exe isn't commercially code-signed, so Windows shows a warning on first run. Tilt steering and motion need a secure page that shows a certificate warning.
+
+## Links
+
+- [Website](https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/): features, install steps and questions
+- [Download](https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/archive/refs/heads/main.zip): repository zip containing Install.exe
+- [README](https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/blob/main/README.md): full instructions and how it works

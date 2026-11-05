@@ -87,6 +87,10 @@ powershell -ExecutionPolicy Bypass -File tools\build.ps1
 
 Commit the new `Install.exe`, so GitHub's Download ZIP includes it, and attach `release\PhoneController-win-x64.zip` to a GitHub Release.
 
+## Website
+
+The landing page is in `docs/`. To publish it, turn on GitHub Pages for the `main` branch's `/docs` folder under **Settings → Pages**. The site's address and download link assume the repository is named `PhoneAsController`.
+
 ## Third-party software
 
 See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PhoneAsController: Use Your Phone as a PC Game Controller</title>
+<meta name="description" content="Turn an Android phone into an Xbox or PS4 controller, racing wheel, keyboard and trackpad for Windows. Free. Works offline, with nothing to install on the phone.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/">
+<meta name="theme-color" content="#e9e7e3">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="preload" href="assets/sora-2.woff2" as="font" type="font/woff2" crossorigin>
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PhoneAsController">
+<meta property="og:title" content="PhoneAsController: Your phone is the controller">
+<meta property="og:description" content="An Xbox or PS4 controller, racing wheel, keyboard and trackpad for your Windows PC. No internet, no router, nothing to install on the phone.">
+<meta property="og:url" content="https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/">
+<meta property="og:image" content="https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="PhoneAsController: a phone showing a game controller beside the Windows app">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PhoneAsController: Your phone is the controller">
+<meta name="twitter:description" content="An Xbox or PS4 controller, racing wheel, keyboard and trackpad for your Windows PC. No internet, no router, nothing to install on the phone.">
+<meta name="twitter:image" content="https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/assets/og.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "PhoneAsController",
+  "description": "Windows software that turns an Android phone into an Xbox 360 or DualShock 4 controller, racing wheel, keyboard and trackpad, over the laptop's own Wi-Fi hotspot or a USB cable, with no internet or router.",
+  "url": "https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Windows 10, Windows 11 (64-bit)",
+  "softwareVersion": "1.0.0",
+  "fileSize": "47 MB",
+  "downloadUrl": "https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/archive/refs/heads/main.zip",
+  "installUrl": "https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/archive/refs/heads/main.zip",
+  "softwareRequirements": "An Android phone with Chrome. Nothing is installed on the phone.",
+  "image": "https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/assets/og.png",
+  "screenshot": [
+    "https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/assets/manager.webp",
+    "https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/assets/pad.webp",
+    "https://YOUR-GITHUB-USERNAME.github.io/PhoneAsController/assets/wheel.webp"
+  ],
+  "featureList": [
+    "Xbox 360 and DualShock 4 controller emulation",
+    "Racing wheel with gas, brake and handbrake",
+    "Trackpad with multi-finger gestures",
+    "Keyboard keys for games",
+    "Laptop Wi-Fi hotspot that needs no internet or router",
+    "USB cable connection",
+    "Up to 8 phones"
+  ],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to use your phone as a game controller on a Windows PC",
+  "step": [
+    { "@type": "HowToStep", "name": "Download", "text": "Download the PhoneAsController zip and extract it." },
+    { "@type": "HowToStep", "name": "Install", "text": "Double-click Install.exe. If Windows says it protected your PC, click More info, then Run anyway. Say Yes when Windows asks for permission." },
+    { "@type": "HowToStep", "name": "Join the laptop's Wi-Fi", "text": "Scan the Step 1 code with the phone's camera and tap Join. If the phone warns about no internet, choose to stay connected." },
+    { "@type": "HowToStep", "name": "Open the controller", "text": "Scan the Step 2 code. The controller opens in the phone's browser." }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Can I use my phone as a game controller on a PC with no internet?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. PhoneAsController makes its own password-protected Wi-Fi hotspot on the laptop, so neither device needs internet or a router. The laptop's Wi-Fi must be switched on, but it doesn't have to be connected to anything. You can also use a USB cable with USB tethering." } },
+    { "@type": "Question", "name": "Does it work in aeroplane mode?", "acceptedAnswer": { "@type": "Answer", "text": "The hotspot needs the laptop's Wi-Fi on, and aeroplane mode turns it off. Windows lets you turn Wi-Fi back on while staying in aeroplane mode, and the app has a Turn on Wi-Fi button for this. It only turns Wi-Fi on when you click." } },
+    { "@type": "Question", "name": "Do I need to install an app on my phone?", "acceptedAnswer": { "@type": "Answer", "text": "No. You scan a code and the controller opens in the phone's browser. Only the Windows PC needs an install." } },
+    { "@type": "Question", "name": "Which games does it work with?", "acceptedAnswer": { "@type": "Answer", "text": "Windows sees a standard Xbox 360 or DualShock 4 controller through the ViGEmBus driver, so games that support those controllers should work. Some anti-cheat systems may block virtual controllers." } },
+    { "@type": "Question", "name": "Which phones are supported?", "acceptedAnswer": { "@type": "Answer", "text": "It is built and tested on Android phones with Chrome, mainly a Samsung Galaxy S22 Ultra. iPhones have not been tested." } },
+    { "@type": "Question", "name": "How much delay is there?", "acceptedAnswer": { "@type": "Answer", "text": "One early test on a Galaxy S22 Ultra over home Wi-Fi measured about 9 ms one way. It used an earlier build, and results depend on the phone and connection. The app shows a live ms reading so you can check your own." } },
+    { "@type": "Question", "name": "Can several people play at once?", "acceptedAnswer": { "@type": "Answer", "text": "Up to 8 phones can join, each with its own name and colour. Many Windows games read at most 4 Xbox controllers." } },
+    { "@type": "Question", "name": "Does it keep running after I close it?", "acceptedAnswer": { "@type": "Answer", "text": "No. Closing the window stops the app within a few seconds: phones disconnect, and the hotspot, network ports and helper programs are gone. Nothing runs in the background or at startup. Your settings stay on disk, and the controller driver stays installed but idle until you uninstall it." } },
+    { "@type": "Question", "name": "Why does Windows warn me when I run Install.exe?", "acceptedAnswer": { "@type": "Answer", "text": "The app isn't commercially code-signed, so Windows shows Windows protected your PC. Click More info, then Run anyway." } },
+    { "@type": "Question", "name": "Why does the phone's browser say Not secure?", "acceptedAnswer": { "@type": "Answer", "text": "The controller page uses plain HTTP so it opens with no certificate warning. On the laptop's hotspot, the Wi-Fi password protects the traffic. On a shared Wi-Fi network, others may be able to read it, so use the hotspot or USB for anything private." } }
+  ]
+}
+</script>
+
+<style>
+/* Layout: the page is a piece of the app's hardware, porcelain tiles and sunken wells with one orange key. */
+@font-face { font-family: "Sora"; src: url(assets/sora-2.woff2) format("woff2"); font-weight: 200 600; font-display: swap; }
+@font-face { font-family: "Space Mono"; src: url(assets/spacemono-4.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "DotGothic16"; src: url(assets/dotgothic16-1.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+:root {
+  color-scheme: light;
+  --base: #e9e7e3; --hi: #ffffff; --lo: #cbc6bf;
+  --ink: #3a3834; --body: #5f5b54; --label: #736e67;
+  --orange: #ff6a1a;
+  --raise: 8px 8px 18px var(--lo), -8px -8px 18px var(--hi);
+  --raise-sm: 4px 4px 10px var(--lo), -4px -4px 10px var(--hi);
+  --sink: inset 6px 6px 12px var(--lo), inset -6px -6px 12px var(--hi);
+  --sink-sm: inset 2px 2px 5px var(--lo), inset -2px -2px 5px var(--hi);
+  --tile: linear-gradient(150deg, #f1efeb, #e5e2dd);
+  --sans: "Sora", system-ui, "Segoe UI", sans-serif;
+  --mono: "Space Mono", ui-monospace, Consolas, monospace;
+  --dot: "DotGothic16", ui-monospace, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body { margin: 0; background: #e9e7e3 radial-gradient(1200px 700px at 30% 0%, #f2f0ec, #dedad4) no-repeat; color: var(--body); font: 300 16px/1.65 var(--sans); }
+img, svg { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: var(--ink); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: 1180px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { color: var(--ink); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(42px, 6.4vw, 78px); font-weight: 200; line-height: 1.04; letter-spacing: -.02em; }
+h2 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 200; line-height: 1.15; letter-spacing: -.01em; }
+h3 { font-size: 17px; font-weight: 400; line-height: 1.35; }
+p { margin: 0; }
+.lbl { font: 400 11px/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--label); }
+.tile { background: var(--tile); border-radius: 26px; box-shadow: var(--raise); }
+.well { border-radius: 20px; box-shadow: var(--sink); }
+section { padding-block: clamp(44px, 6vw, 76px); }
+.head { display: grid; gap: 12px; max-width: 680px; margin-bottom: 30px; }
+
+/* top bar */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; padding-block: 12px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--base); }
+.bar { display: flex; align-items: center; gap: 20px; padding: 8px 10px 8px 12px; border-radius: 30px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 400; font-size: 15px; }
+.brand img { width: 34px; height: 34px; border-radius: 10px; }
+.bar nav { display: flex; gap: 22px; margin-left: auto; font-size: 13px; }
+.bar nav a { color: var(--body); text-decoration: none; }
+.bar nav a:hover { color: var(--ink); }
+.chip { padding: 8px 15px; border-radius: 999px; font-size: 12px; font-weight: 400; white-space: nowrap; color: var(--ink); text-decoration: none; background: linear-gradient(#fff, #f1eee9); box-shadow: 0 2px 5px rgba(90, 76, 60, .18); }
+
+/* the orange key */
+.key { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 62px; padding: 8px 30px 12px; border-radius: 15px; text-decoration: none; text-align: center;
+  font: 400 15px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: #2a1203; font-weight: 700;
+  background: linear-gradient(180deg, #ff8d45, #f7650f); transition: transform .08s, box-shadow .08s;
+  box-shadow: inset 0 1px 0 rgba(255, 220, 190, .9), inset 0 -5px 0 #cf4a06, 0 2px 0 #9c3604, 0 12px 22px rgba(190, 80, 15, .32); }
+.key svg { width: 19px; height: 19px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.key:hover { box-shadow: inset 0 1px 0 rgba(255, 220, 190, .9), inset 0 -5px 0 #cf4a06, 0 2px 0 #9c3604, 0 12px 26px rgba(255, 106, 26, .5); }
+.key:active { transform: translateY(3px); box-shadow: inset 0 1px 0 rgba(255, 220, 190, .9), inset 0 -3px 0 #cf4a06, 0 1px 0 #9c3604, 0 4px 10px rgba(190, 80, 15, .3); }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 4vw, 56px); align-items: center; padding-block: clamp(24px, 4vw, 52px) clamp(54px, 6vw, 80px); }
+.hero .copy { display: grid; gap: 20px; justify-items: start; min-width: 0; }
+.lead { font-size: 18px; max-width: 34em; }
+.note { font-size: 13px; }
+.stage { position: relative; min-width: 0; padding-bottom: 54px; }
+.win { border-radius: 26px; overflow: hidden; box-shadow: 0 40px 80px rgba(70, 58, 44, .24), 0 0 0 1px rgba(255, 255, 255, .7); }
+.phone { background: #0b0c0e; padding: 7px; border-radius: 20px; box-shadow: 0 0 0 1px #2a2b2e, 0 24px 44px rgba(50, 40, 30, .36); }
+.phone img { border-radius: 14px; width: 100%; }
+.stage .phone { position: absolute; left: -22px; bottom: 0; width: 56%; }
+
+/* status display */
+.term { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 26px; padding: 15px 22px; border-radius: 16px; position: relative; overflow: hidden;
+  background: linear-gradient(180deg, #0b0b0c, #151517); box-shadow: inset 0 2px 8px rgba(0, 0, 0, .9), 0 1px 0 #fff, 0 0 0 1px rgba(0, 0, 0, .25);
+  font: 400 15px/1.3 var(--dot); letter-spacing: .08em; color: #ff8a44; text-shadow: 0 0 6px rgba(255, 106, 26, .65); }
+.term::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(180deg, rgba(0, 0, 0, .28) 0 1px, transparent 1px 3px); }
+
+/* what it is */
+.about { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(26px, 4vw, 56px); align-items: start; }
+.about .say { display: grid; gap: 16px; font-size: 18px; min-width: 0; }
+.spec { margin: 0; padding: 12px 22px; display: grid; }
+.spec > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: baseline; padding-block: 11px; font-size: 14px; }
+.spec > div + div { border-top: 1px solid rgba(90, 76, 60, .13); }
+.spec dd { margin: 0; color: var(--ink); font-weight: 400; }
+
+/* controls */
+.modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.mode { padding: 16px 16px 22px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.mode .txt { display: grid; gap: 5px; padding-inline: 6px; font-size: 14.5px; }
+
+/* connect */
+.ways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.way { padding: 24px; display: grid; gap: 10px; align-content: start; font-size: 14.5px; min-width: 0; }
+.way .tag { display: flex; align-items: center; gap: 8px; }
+.led { width: 7px; height: 7px; flex: none; border-radius: 50%; background: #c9c4bc; box-shadow: inset 1px 1px 2px rgba(0, 0, 0, .2); }
+.led.on { background: var(--orange); box-shadow: 0 0 6px 1px rgba(255, 106, 26, .75); }
+
+/* gestures */
+.gestures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; list-style: none; margin: 0; padding: 0; }
+.gestures li { padding: 16px; display: grid; gap: 12px; align-content: start; font-size: 13.5px; line-height: 1.45; min-width: 0; }
+.gestures b { display: block; color: var(--ink); font-weight: 400; font-size: 14.5px; }
+.pad { height: 76px; border-radius: 14px; box-shadow: var(--sink-sm); display: grid; place-items: center; }
+.pad svg { width: 92px; height: 56px; }
+.pad circle { fill: var(--orange); }
+.pad .ring { fill: none; stroke: var(--orange); stroke-width: 1.6; }
+.pad path { fill: none; stroke: #8f8a83; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* install */
+.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.steps li { counter-increment: s; display: grid; gap: 8px; align-content: start; font-size: 14.5px; min-width: 0; }
+.steps li::before { content: counter(s); width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; font: 400 15px var(--mono); color: var(--ink); background: linear-gradient(145deg, #f6f4f0, #e5e1db); box-shadow: var(--raise-sm); margin-bottom: 8px; }
+.install-cta { margin-top: 34px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; }
+
+/* closing it */
+.off { padding: clamp(24px, 4vw, 44px); display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(22px, 4vw, 48px); align-items: center; }
+.off .say { display: grid; gap: 14px; min-width: 0; }
+.off ul { list-style: none; margin: 0; padding: 18px 22px; display: grid; gap: 11px; font-size: 14px; }
+.off li { display: flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 400; }
+
+/* faq: all open, nothing to click */
+.faq { columns: 2; column-gap: 40px; }
+.faq article { break-inside: avoid; display: grid; gap: 6px; padding-bottom: 28px; font-size: 15px; }
+code { font: 400 .92em var(--mono); color: var(--ink); overflow-wrap: anywhere; }
+
+.final { text-align: center; display: grid; justify-items: center; gap: 22px; }
+footer { padding-block: 28px 44px; font-size: 12.5px; line-height: 1.6; border-top: 1px solid rgba(90, 76, 60, .13); }
+footer .wrap { display: grid; gap: 10px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+@media (max-width: 980px) {
+  .hero, .about, .off { grid-template-columns: minmax(0, 1fr); }
+  .stage .phone { left: 10px; }
+  .gestures, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ways { grid-template-columns: minmax(0, 1fr); }
+  .faq { columns: 1; }
+}
+@media (max-width: 640px) {
+  .bar nav { display: none; }
+  .bar .chip { margin-left: auto; }
+  .modes { grid-template-columns: minmax(0, 1fr); }
+  .stage .phone { left: 6px; width: 66%; }
+  .key { width: 100%; padding-inline: 16px; }
+  .spec > div { grid-template-columns: 82px minmax(0, 1fr); }
+}
+@media (max-width: 420px) { .gestures, .steps { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .key { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="bar tile">
+      <a class="brand" href="#top"><img src="assets/icon-192.png" width="192" height="192" alt="">PhoneAsController</a>
+      <nav aria-label="Page sections">
+        <a href="#controls">Controls</a>
+        <a href="#connect">Connect</a>
+        <a href="#gestures">Trackpad</a>
+        <a href="#install">Install</a>
+        <a href="#faq">Questions</a>
+      </nav>
+      <a class="chip" href="https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/archive/refs/heads/main.zip">Download</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <div class="hero">
+      <div class="copy">
+        <span class="lbl">For Windows and Android</span>
+        <h1>Your phone is the controller.</h1>
+        <p class="lead">PhoneAsController turns an Android phone into an Xbox or PS4 controller, racing wheel, keyboard and trackpad for your Windows PC. It needs no internet and no router, and there's nothing to install on the phone.</p>
+        <a class="key" href="https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/archive/refs/heads/main.zip">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M6.5 10 12 15.5 17.500 10M4 20.500h16"/></svg>
+          Download for Windows
+        </a>
+        <p class="note">Free · 47 MB zip · Windows 10 and 11, 64-bit<br><a href="https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController">See the source on GitHub</a></p>
+      </div>
+      <div class="stage">
+        <div class="win"><img src="assets/manager.webp" width="2480" height="1600" alt="The PhoneAsController window on Windows, showing two QR codes: step 1 joins the laptop's Wi-Fi, step 2 opens the controller." fetchpriority="high"></div>
+        <div class="phone"><img src="assets/pad.webp" width="1688" height="780" alt="A phone in landscape showing the controller: two sticks, a D-pad, A B X Y buttons, bumpers and triggers."></div>
+      </div>
+    </div>
+
+    <div class="term" role="note"><span>NO INTERNET</span><span>NO ROUTER</span><span>NOTHING TO INSTALL ON THE PHONE</span></div>
+  </div>
+
+  <section>
+    <div class="wrap about">
+      <div class="say">
+        <h2>What is PhoneAsController?</h2>
+        <p>PhoneAsController is a free Windows app that lets an Android phone control your PC. Windows sees a standard Xbox 360 or DualShock 4 controller, so games that support those controllers should treat your phone like the real thing.</p>
+        <p>The laptop makes its own password-protected Wi-Fi, and the phone joins it by scanning a code. The controller then opens in the phone's browser, so the only thing you install is the app on your PC.</p>
+      </div>
+      <dl class="spec well">
+        <div><dt class="lbl">PC</dt><dd>Windows 10 or 11, 64-bit</dd></div>
+        <div><dt class="lbl">Phone</dt><dd>Android with Chrome, nothing to install</dd></div>
+        <div><dt class="lbl">Acts as</dt><dd>Xbox 360 or DualShock 4 controller, racing wheel, keyboard, trackpad</dd></div>
+        <div><dt class="lbl">Connects</dt><dd>Laptop hotspot, USB cable or shared Wi-Fi</dd></div>
+        <div><dt class="lbl">Phones</dt><dd>Up to 8 at once</dd></div>
+        <div><dt class="lbl">Download</dt><dd>47 MB zip, 113 MB once installed</dd></div>
+        <div><dt class="lbl">Price</dt><dd>Free</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="controls">
+    <div class="wrap">
+      <div class="head">
+        <span class="lbl">Controls</span>
+        <h2>Four ways to play on one screen</h2>
+      </div>
+      <div class="modes">
+        <article class="mode tile">
+          <div class="phone"><img src="assets/pad.webp" width="1688" height="780" loading="lazy" alt="Controller screen with two sticks, D-pad, face buttons, bumpers and triggers."></div>
+          <div class="txt"><h3>Game controller</h3><p>Sticks, triggers, bumpers, D-pad and rumble. Choose Xbox 360 or DualShock 4 for each phone.</p></div>
+        </article>
+        <article class="mode tile">
+          <div class="phone"><img src="assets/wheel.webp" width="1688" height="780" loading="lazy" alt="Racing wheel screen with a steering wheel, gas and brake pedals, handbrake and buttons."></div>
+          <div class="txt"><h3>Racing wheel</h3><p>Steer by touch or with buttons. Gas, brake and handbrake are always under your thumb.</p></div>
+        </article>
+        <article class="mode tile">
+          <div class="phone"><img src="assets/mouse.webp" width="1688" height="780" loading="lazy" alt="Trackpad screen with a large touch surface, a scroll strip and left, middle and right buttons."></div>
+          <div class="txt"><h3>Trackpad</h3><p>Move the real cursor, with the multi-finger gestures you'd expect from a laptop.</p></div>
+        </article>
+        <article class="mode tile">
+          <div class="phone"><img src="assets/keys.webp" width="1688" height="780" loading="lazy" alt="Keyboard screen with W A S D keys and Space, Shift, E, Q, R, F, Ctrl and Esc."></div>
+          <div class="txt"><h3>Keyboard</h3><p>WASD and the keys games use most, at real keycap size. Pick the keys you want.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="connect">
+    <div class="wrap">
+      <div class="head">
+        <span class="lbl">Connect</span>
+        <h2>Works with no internet at all</h2>
+        <p>Neither device has to be online. Pick whichever suits where you are.</p>
+      </div>
+      <div class="ways">
+        <article class="way tile">
+          <span class="tag lbl"><i class="led on"></i>Default</span>
+          <h3>Laptop hotspot</h3>
+          <p>The laptop makes its own password-protected Wi-Fi. Scan one code to join and another to open the controller. Wi-Fi only has to be switched on, even in aeroplane mode.</p>
+        </article>
+        <article class="way tile">
+          <span class="tag lbl"><i class="led"></i>Cable</span>
+          <h3>USB cable</h3>
+          <p>Plug in, turn on USB tethering on the phone and scan the code. No mobile data is used.</p>
+        </article>
+        <article class="way tile">
+          <span class="tag lbl"><i class="led"></i>Same network</span>
+          <h3>Shared Wi-Fi</h3>
+          <p>Already on the same network? Scan the code and play. Use the hotspot or USB for anything private, since others on a shared network may be able to read it.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="gestures">
+    <div class="wrap">
+      <div class="head">
+        <span class="lbl">Trackpad</span>
+        <h2>The gestures you already know</h2>
+      </div>
+      <ul class="gestures">
+        <li class="tile"><div class="pad"><svg viewBox="0 0 92 56" aria-hidden="true"><circle cx="26" cy="28" r="8"/><path d="M42 28h28m-8-7 8 7-8 7"/></svg></div><div><b>One finger</b>Move the cursor</div></li>
+        <li class="tile"><div class="pad"><svg viewBox="0 0 92 56" aria-hidden="true"><circle cx="46" cy="28" r="8"/><circle class="ring" cx="46" cy="28" r="15"/></svg></div><div><b>Tap</b>Left click</div></li>
+        <li class="tile"><div class="pad"><svg viewBox="0 0 92 56" aria-hidden="true"><circle class="ring" cx="16" cy="28" r="9"/><circle cx="38" cy="28" r="8"/><path d="M52 28h26m-8-7 8 7-8 7"/></svg></div><div><b>Double-tap and hold</b>Hold the left button and drag</div></li>
+        <li class="tile"><div class="pad"><svg viewBox="0 0 92 56" aria-hidden="true"><circle cx="35" cy="28" r="8"/><circle cx="57" cy="28" r="8"/><circle class="ring" cx="46" cy="28" r="23"/></svg></div><div><b>Two-finger tap</b>Right click</div></li>
+        <li class="tile"><div class="pad"><svg viewBox="0 0 92 56" aria-hidden="true"><circle cx="26" cy="28" r="8"/><circle cx="48" cy="28" r="8"/><path d="M72 12v32m-7-25 7-7 7 7m-14 18 7 7 7-7"/></svg></div><div><b>Two-finger drag</b>Scroll</div></li>
+        <li class="tile"><div class="pad"><svg viewBox="0 0 92 56" aria-hidden="true"><circle cx="24" cy="28" r="8"/><circle cx="46" cy="28" r="8"/><circle cx="68" cy="28" r="8"/></svg></div><div><b>Three-finger tap</b>See all open windows</div></li>
+        <li class="tile"><div class="pad"><svg viewBox="0 0 92 56" aria-hidden="true"><circle cx="20" cy="36" r="7"/><circle cx="40" cy="36" r="7"/><circle cx="60" cy="36" r="7"/><path d="M78 46V10m-7 7 7-7 7 7"/></svg></div><div><b>Three-finger swipe up</b>Show the desktop; again brings the windows back</div></li>
+        <li class="tile"><div class="pad"><svg viewBox="0 0 92 56" aria-hidden="true"><circle cx="26" cy="19" r="7"/><circle cx="46" cy="19" r="7"/><circle cx="66" cy="19" r="7"/><path d="M14 42h64m-57-7-7 7 7 7m50-14 7 7-7 7"/></svg></div><div><b>Three-finger swipe left or right</b>Change virtual desktop</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap">
+      <div class="head">
+        <span class="lbl">Install</span>
+        <h2>Playing in four steps</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Download and extract</h3><p>Get the zip and extract it anywhere.</p></li>
+        <li><h3>Run Install.exe</h3><p>It sets up everything. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. Say Yes when Windows asks for permission.</p></li>
+        <li><h3>Join the Wi-Fi</h3><p>Scan the Step 1 code with your phone's camera and tap Join. If it warns about no internet, choose to stay connected.</p></li>
+        <li><h3>Open the controller</h3><p>Scan the Step 2 code. That's it: nothing to install on the phone.</p></li>
+      </ol>
+      <div class="install-cta">
+        <a class="key" href="https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/archive/refs/heads/main.zip">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M6.500 10 12 15.500 17.500 10M4 20.500h16"/></svg>
+          Download for Windows
+        </a>
+        <p class="note">47 MB zip. Removes cleanly from Windows Settings, under Installed apps.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="off tile">
+        <div class="say">
+          <span class="lbl">When you're done</span>
+          <h2>Close the window and it's gone</h2>
+          <p>Closing the app stops everything within a few seconds. Your hotspot name and phone names stay saved for next time. The controller driver stays installed but idle until you uninstall it.</p>
+        </div>
+        <ul class="well">
+          <li><i class="led"></i>No background process</li>
+          <li><i class="led"></i>No hotspot left on</li>
+          <li><i class="led"></i>No open network ports</li>
+          <li><i class="led"></i>Nothing added to startup</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="head">
+        <span class="lbl">Questions</span>
+        <h2>Good to know before you download</h2>
+      </div>
+      <div class="faq">
+        <article><h3>Can I use my phone as a game controller on a PC with no internet?</h3><p>Yes. PhoneAsController makes its own password-protected Wi-Fi hotspot on the laptop, so neither device needs internet or a router. The laptop's Wi-Fi must be switched on, but it doesn't have to be connected to anything. You can also use a USB cable with USB tethering.</p></article>
+        <article><h3>Does it work in aeroplane mode?</h3><p>The hotspot needs the laptop's Wi-Fi on, and aeroplane mode turns it off. Windows lets you turn Wi-Fi back on while staying in aeroplane mode, and the app has a Turn on Wi-Fi button for this. It only turns Wi-Fi on when you click.</p></article>
+        <article><h3>Do I need to install an app on my phone?</h3><p>No. You scan a code and the controller opens in the phone's browser. Only the Windows PC needs an install.</p></article>
+        <article><h3>Which games does it work with?</h3><p>Windows sees a standard Xbox 360 or DualShock 4 controller through the ViGEmBus driver, so games that support those controllers should work. Some anti-cheat systems may block virtual controllers.</p></article>
+        <article><h3>Which phones are supported?</h3><p>It is built and tested on Android phones with Chrome, mainly a Samsung Galaxy S22 Ultra. iPhones have not been tested.</p></article>
+        <article><h3>How much delay is there?</h3><p>One early test on a Galaxy S22 Ultra over home Wi-Fi measured about 9 ms one way. It used an earlier build, and results depend on the phone and connection. The app shows a live ms reading so you can check your own.</p></article>
+        <article><h3>Can several people play at once?</h3><p>Up to 8 phones can join, each with its own name and colour. Many Windows games read at most 4 Xbox controllers.</p></article>
+        <article><h3>Does it keep running after I close it?</h3><p>No. Closing the window stops the app within a few seconds: phones disconnect, and the hotspot, network ports and helper programs are gone. Nothing runs in the background or at startup. Your settings stay on disk, and the controller driver stays installed but idle until you uninstall it.</p></article>
+        <article><h3>Why does Windows warn me when I run Install.exe?</h3><p>The app isn't commercially code-signed, so Windows shows "Windows protected your PC". Click More info, then Run anyway.</p></article>
+        <article><h3>Why does the phone's browser say Not secure?</h3><p>The controller page uses plain HTTP so it opens with no certificate warning. On the laptop's hotspot, the Wi-Fi password protects the traffic. On a shared Wi-Fi network, others may be able to read it, so use the hotspot or USB for anything private.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap final">
+      <h2>Pick up your phone and play.</h2>
+      <a class="key" href="https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/archive/refs/heads/main.zip">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M6.500 10 12 15.500 17.500 10M4 20.500h16"/></svg>
+        Download for Windows
+      </a>
+      <p class="note">Free · 47 MB zip · Windows 10 and 11, 64-bit</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <nav aria-label="Links">
+      <a href="https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController">GitHub</a>
+      <a href="https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/blob/main/README.md">README</a>
+      <a href="https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices</a>
+      <a href="https://github.com/YOUR-GITHUB-USERNAME/PhoneAsController/issues">Report a problem</a>
+    </nav>
+    <p>PhoneAsController is an independent project, not affiliated with or endorsed by Microsoft, Sony, Samsung or Google. Xbox, DualShock, Windows, Android and Galaxy are trademarks of their owners.</p>
+  </div>
+</footer>
+</body>
+</html>
