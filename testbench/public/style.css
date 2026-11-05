@@ -1,0 +1,108 @@
+/* Components. Colours, radii and fonts come from theme.css. */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.4 var(--font); }
+body.phone { overscroll-behavior: none; }
+button, select, input[type=text] { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 8px 12px; }
+button.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); font-weight: 600; }
+button.danger { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, var(--line)); }
+button:disabled { opacity: .5; }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); background: var(--panel); }
+.bar .grow { flex: 1; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--bad); display: inline-block; }
+.dot.on { background: var(--good); }
+.tabs button.active { border-color: var(--accent); color: var(--accent); }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.view { padding: 12px; }
+.hidden { display: none !important; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; margin: 10px 0; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+.stat b { display: block; font-size: 20px; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+canvas.hist { width: 100%; height: 120px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 12px; }
+th, td { text-align: left; padding: 6px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 500; }
+
+/* Touch test */
+#touchArea { position: relative; height: 55vh; background: var(--panel); border: 1px dashed var(--line); border-radius: 12px; touch-action: none; overflow: hidden; }
+#touchArea .hint { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); pointer-events: none; }
+
+/* Player identity (colour assigned by the laptop) */
+.playerbar { border-top: 4px solid var(--player); }
+.pbadge { min-width: 30px; padding: 2px 8px; border-radius: 99px; background: var(--player); color: #fff; font-weight: 800; text-align: center; text-shadow: 0 1px 2px rgb(0 0 0 / .35); }
+.overlay { box-shadow: inset 0 0 0 3px var(--player); }
+.overlay .player-tag { position: absolute; top: 6px; left: 8px; z-index: 2; pointer-events: none; }
+.kicked { position: fixed; inset: 0; z-index: 30; background: var(--bg); display: grid; place-items: center; text-align: center; padding: 24px; }
+
+.touchdot { position: absolute; width: 44px; height: 44px; margin: -22px; border-radius: 50%; background: var(--accent); pointer-events: none; }
+.view .card { margin: 12px 0; }
+.row.wrap { flex-wrap: wrap; }
+
+/* Controller overlays (pad / wheel / mouse) */
+.overlay { position: fixed; inset: 0; background: var(--bg); touch-action: none; user-select: none; -webkit-user-select: none; z-index: 10; }
+.overlay .stick { position: absolute; width: 34vmin; height: 34vmin; border-radius: 50%; background: var(--panel); border: 2px solid var(--line); }
+.overlay .stick .knob { position: absolute; width: 40%; height: 40%; left: 30%; top: 30%; border-radius: 50%; background: #334155; pointer-events: none; }
+.overlay .btn { position: absolute; width: 13vmin; height: 13vmin; border-radius: 50%; background: var(--panel); border: 2px solid var(--line); display: grid; place-items: center; font-weight: 700; font-size: 4vmin; color: var(--muted); }
+.overlay .btn.rect { border-radius: 10px; width: 16vmin; height: 9vmin; }
+.overlay .btn.mini { width: 9vmin; height: 9vmin; font-size: 3vmin; }
+.overlay .trigger { position: absolute; top: 13vh; width: 11vmin; height: 40vh; border-radius: 12px; border: 2px solid var(--line); display: grid; place-items: center; text-align: center; font-weight: 800; font-size: 3.6vmin; color: #cbd5e1;
+  background: linear-gradient(to top, var(--accent) var(--fill, 0%), var(--panel) var(--fill, 0%)); }
+.overlay .trigger span { pointer-events: none; display: flex; flex-direction: column; gap: 2px; }
+.overlay .trigger b { font-size: 3vmin; color: var(--text); font-variant-numeric: tabular-nums; }
+.overlay .on { background: var(--accent) !important; color: #0b1220 !important; }
+.overlay .padinfo { position: absolute; top: 6px; left: 50%; transform: translateX(-50%); font-size: 12px; color: var(--muted); text-align: center; pointer-events: none; white-space: nowrap; }
+.overlay .close { position: absolute; top: 6px; right: 6px; padding: 4px 10px; z-index: 2; }
+
+/* Wheel */
+.pedal { position: absolute; bottom: 4vh; width: 17vw; height: 72vh; border-radius: 14px; border: 2px solid var(--line); display: grid; place-items: center; text-align: center; font-weight: 800; font-size: 4vmin; color: #cbd5e1;
+  background: linear-gradient(to top, var(--fill-color) var(--fill, 0%), var(--panel) var(--fill, 0%)); }
+.pedal span { pointer-events: none; }
+#brakePedal { left: 2vw; --fill-color: #f87171; }
+#gasPedal { right: 2vw; --fill-color: #4ade80; }
+#wheelHud { position: absolute; left: 50%; top: 5vh; width: min(60vw, 78vh); height: min(60vw, 78vh); transform: translateX(-50%); pointer-events: none; overflow: visible; }
+#wheelTouch { position: absolute; left: 50%; top: 5vh; width: min(60vw, 78vh); height: min(60vw, 78vh); transform: translateX(-50%); border-radius: 50%; }
+#wheelHud .horizon { stroke: #334155; stroke-width: 1.5; stroke-dasharray: 6 6; }
+#wheelHud .steer-arc { fill: none; stroke-width: 7; stroke-linecap: round; }
+#wheelHud .lock { stroke: #f87171; stroke-width: 3; }
+#wheelHud .hud-pct { fill: #e6e9ef; font: 800 16px system-ui; text-anchor: middle; }
+#wheelHud .hud-deg { fill: #8a93a6; font: 700 7px system-ui; text-anchor: middle; letter-spacing: .04em; }
+.overlay .btn.paddle { width: 12vmin; height: 22vmin; border-radius: 12px; font-size: 7vmin; line-height: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.overlay .btn.paddle small { font-size: 2.6vmin; color: var(--muted); }
+
+/* Mouse */
+#mouseSurface { position: absolute; left: 12px; right: 18vw; top: 56px; bottom: 22vh; border-radius: 16px; background: var(--panel); border: 1px solid var(--line); display: grid; place-items: center; color: var(--line); font-size: 6vmin; }
+#mouseScroll { position: absolute; right: 12px; width: calc(18vw - 24px); top: 56px; bottom: 22vh; border-radius: 16px; background: var(--panel); border: 1px dashed var(--line); display: grid; place-items: center; color: var(--muted); writing-mode: vertical-rl; }
+#mouseSurface span, #mouseScroll span { pointer-events: none; }
+.mouse-buttons { position: absolute; left: 12px; right: 12px; bottom: 12px; height: calc(22vh - 24px); display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 12px; }
+.mbtn { border-radius: 14px; background: var(--panel); border: 2px solid var(--line); display: grid; place-items: center; font-weight: 800; color: var(--muted); }
+
+/* Pressure target in the calibration wizard */
+#calibTarget { width: 34vmin; height: 34vmin; margin: 8px auto; border-radius: 50%; background: var(--panel); border: 3px solid var(--accent); display: grid; place-items: center; font-size: 7vmin; font-weight: 800; color: var(--accent); touch-action: none; user-select: none; -webkit-user-select: none; }
+#calibTarget.on { background: var(--accent); color: #0b1220; }
+/* Calibration wizard */
+#calib { position: fixed; inset: 0; z-index: 20; background: var(--bg); padding: 12px 16px; overflow-y: auto; touch-action: manipulation; }
+#calib .calib-head { display: flex; justify-content: space-between; align-items: center; }
+#calib h2 { margin: 6px 0 2px; font-size: 22px; }
+#calib p { margin: 0 0 8px; }
+#calib canvas { width: 100%; display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+#calibGauge { height: 70px; }
+#calibCurve { height: 140px; margin-bottom: 8px; }
+#calibCount { font-size: 56px; font-weight: 800; text-align: center; height: 70px; line-height: 70px; font-variant-numeric: tabular-nums; }
+#calibResult { min-height: 20px; text-align: center; }
+.calib-actions { justify-content: center; gap: 12px; }
+.calib-actions button { min-width: 110px; padding: 12px 16px; }
+.warn { color: var(--warn); }
+.row { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+label.row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+label.row input[type=range] { flex: 1; }
+
+/* Dashboard */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; padding: 12px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.card h3 { margin: 0 0 8px; font-size: 14px; }
+.qrs { display: flex; flex-wrap: wrap; gap: 16px; }
+.qr { text-align: center; font-size: 12px; }
+.qr svg { width: 150px; height: 150px; background: #fff; border-radius: 8px; padding: 4px; display: block; margin: 4px auto; }
+.viz { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.viz .t { position: absolute; width: 22px; height: 22px; margin: -11px; border-radius: 50%; background: var(--accent); }

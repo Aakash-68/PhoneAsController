@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PhoneController</title>
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body class="base mgr" data-view="devices">
+<div class="screen">
+
+  <header class="top">
+    <img src="icon-192.png" class="appicon" alt="">
+    <nav class="navpill tile">
+      <a data-view="devices" class="is-on">Devices</a><a data-view="setup">Setup <i class="led" id="navSetupLed"></i></a><a href="/dashboard" target="_blank">Diagnostics</a>
+      <div class="inpill" id="addrPill" title="Type this on the phone if the camera can't scan">
+        <svg viewBox="0 0 24 24"><path d="M3 9.5a13 13 0 0 1 18 0M6 13a8.5 8.5 0 0 1 12 0M9.2 16.4a4 4 0 0 1 5.6 0"/><circle cx="12" cy="19.5" r="1"/></svg>
+        <span class="num" id="addrText">–</span><button class="chipbtn" id="copyAddr">Copy</button>
+      </div>
+    </nav>
+  </header>
+
+  <aside class="left">
+    <section class="tile join">
+      <div class="nets" id="netTabs"></div>
+      <div class="nets steps2 hidden" id="joinSteps"><button data-step="1">1 Join Wi-Fi</button><button data-step="2">2 Open app</button></div>
+      <div class="qr" id="qrWrap"><div id="qrBox"></div></div>
+      <div class="term" id="qrUrl">–</div>
+      <div class="creds hidden" id="hsCreds">
+        <div><span class="lbl">Network</span><b class="num" id="hsSsid"></b></div>
+        <div><span class="lbl">Password</span><b class="num" id="hsPass"></b></div>
+      </div>
+      <p class="sub help" id="joinHelp"></p>
+      <div class="line"><span>New phones</span><button class="tgl" id="allowJoins" title="Turn off to stop new phones joining"><i></i></button></div>
+      <div class="line"><span>Phone can be the mouse</span><button class="tgl" id="mouseAllow2" title="Lets phones move this laptop's mouse and press keys"><i></i></button></div>
+    </section>
+    <section class="tile list">
+      <span class="lbl" id="playersLbl">Players · 0 / 8</span>
+      <div id="items"></div>
+      <span class="sub add" id="slotsFree">Scan the code with your phone's camera</span>
+      <div class="foot">
+        <span class="lbl"><i class="led" id="ledDrv"></i>DRV</span><span class="lbl"><i class="led" id="ledNet"></i>NET</span><span class="lbl"><i class="led" id="ledTest"></i>TEST</span>
+        <button class="key" id="quitBtn" title="Stop PhoneController (phones disconnect)">QUIT</button>
+      </div>
+    </section>
+  </aside>
+
+  <!-- ===================== DEVICES ===================== -->
+  <section class="tile main" id="mainDevices">
+    <div class="empty" id="empty">
+      <img src="icon-192.png" alt="">
+      <h2>No phones yet</h2>
+      <p>Scan the codes on the left with your phone's camera.<br>No internet or router needed: the laptop makes its own Wi-Fi hotspot, or use a USB cable.</p>
+    </div>
+
+    <div class="head">
+      <span class="pnum" id="dNum">1</span>
+      <div class="who"><input id="dName" maxlength="24" aria-label="Phone name"><small id="dModel"></small></div>
+      <span class="island" id="island"><i class="lb"></i><b id="iNum">P1</b><span class="msg" id="iMsg"></span></span>
+      <span class="sp"></span>
+      <span class="batt" id="dBatt"><i></i><span></span></span>
+      <span class="term mini"><b id="dPing">–</b>&nbsp;ms</span>
+      <button class="key" id="buzzBtn" title="Make this phone vibrate">BUZZ PHONE</button>
+      <button class="key" id="kickBtn" title="Disconnect this phone">DISCONNECT</button>
+    </div>
+
+    <div class="well mon">
+      <span class="cap"><span class="lbl">Live input</span><i class="led" id="monLed"></i></span><span class="cap2 lbl" id="monMode">–</span>
+      <div class="shellm"></div>
+      <div class="mcore">
+        <i class="mtrig" id="mL2" style="left:46px;top:-22px"></i><i class="mtrig" id="mR2" style="right:46px;top:-22px"></i>
+        <div class="mstick" id="mLS" style="--s:70px;left:44px;top:26px"><i></i></div>
+        <div class="mstick" id="mRS" style="--s:62px;left:206px;top:92px"><i></i></div>
+        <i class="mbtn" data-bit="4" style="left:110px;top:100px"></i><i class="mbtn" data-bit="5" style="left:110px;top:136px"></i><i class="mbtn" data-bit="6" style="left:92px;top:118px"></i><i class="mbtn" data-bit="7" style="left:128px;top:118px"></i>
+        <i class="mbtn" data-bit="3" style="--c:#c9a04a;left:282px;top:30px"></i><i class="mbtn" data-bit="2" style="--c:#6f8db0;left:262px;top:50px"></i>
+        <i class="mbtn" data-bit="1" style="--c:#c8714f;left:302px;top:50px"></i><i class="mbtn" data-bit="0" style="--c:#86a47e;left:282px;top:70px"></i>
+        <i class="mbtn" data-bit="12" style="left:158px;top:40px;width:12px;height:12px"></i><i class="mbtn" data-bit="13" style="left:190px;top:40px;width:12px;height:12px"></i>
+        <i class="mbtn" data-bit="16" style="left:174px;top:12px;width:12px;height:12px"></i>
+      </div>
+    </div>
+
+    <aside class="side">
+      <span class="lbl">Player light</span>
+      <div class="lightbar"><i></i></div>
+      <div class="sws" id="sws"></div>
+      <span class="sub" id="cName"></span>
+      <div class="line"><span>Game rumble</span><button class="tgl" id="rumbleTgl" title="Send game vibration to the phones"><i></i></button></div>
+    </aside>
+
+    <div class="roles"><span class="lbl">Acts as</span>
+      <div class="keys" id="roleKeys"><button class="key" data-v="x360"><i class="led"></i>XBOX 360</button><button class="key" data-v="ds4"><i class="led"></i>DUALSHOCK 4</button><button class="key" data-v="off"><i class="led"></i>OFF</button></div>
+      <span class="sub" id="screenNote"></span>
+    </div>
+
+    <div class="bot">
+      <div class="term"><div class="th"><span>LATENCY</span><b><span id="latBig">–</span> MS</b></div><canvas id="latCanvas"></canvas><div class="dim" id="latFoot" style="font-size:10px">–</div></div>
+      <div class="term"><div class="th"><span>EVENTS</span><span class="tg">● LIVE</span></div><div id="log"></div></div>
+    </div>
+
+    <div class="deck">
+      <svg class="plate" aria-hidden="true"><path id="plate"/></svg>
+      <div class="gd"><div class="dots" data-dots="vib"></div><div class="gdial" data-tune="vib" data-lo="0" data-hi="1"><i></i></div><div class="gd-l"><span class="lbl">Vibration</span><b data-out="vib"></b></div></div>
+      <div class="gd"><div class="dots" data-dots="sens"></div><div class="gdial" data-tune="sens" data-lo="0.5" data-hi="2"><i></i></div><div class="gd-l"><span class="lbl">Sensitivity</span><b data-out="sens"></b></div></div>
+      <div class="gd"><div class="dots" data-dots="dead"></div><div class="gdial" data-tune="dead" data-lo="0" data-hi="0.3"><i></i></div><div class="gd-l"><span class="lbl">Dead zone</span><b data-out="dead"></b></div></div>
+      <div class="gd"><div class="dots" data-dots="trig"></div><div class="gdial" data-tune="trig" data-lo="0.5" data-hi="2"><i></i></div><div class="gd-l"><span class="lbl">Triggers</span><b data-out="trig"></b></div></div>
+    </div>
+  </section>
+
+  <!-- ===================== SETUP ===================== -->
+  <section class="tile main setup" id="mainSetup">
+    <h2>Setup</h2>
+    <ol class="steps">
+      <li id="stepDriver"><span class="state"></span><div><b>Controller driver</b><p class="sub">Lets Windows see your phones as Xbox or PS4 controllers (ViGEmBus, official signed driver).</p></div><button class="key orange" data-action="install-driver">INSTALL</button></li>
+      <li id="stepFirewall"><span class="state"></span><div><b>Network access</b><p class="sub">Lets phones on the hotspot, USB or Wi-Fi reach this laptop. Windows will ask for permission.</p></div><button class="key orange" data-action="allow-firewall">ALLOW</button></li>
+      <li id="stepVerify"><span class="state"></span><div><b>Test</b><p class="sub">Plugs in a test controller for a second and checks Windows sees it.</p></div><button class="key orange" data-action="verify">RUN TEST</button></li>
+    </ol>
+    <p class="sub" id="setupMsg"></p>
+
+    <h3>Hotspot</h3>
+    <div class="set-row"><div><b>Laptop hotspot</b><p class="sub" id="hsStatus">Phones connect straight to this laptop. No internet or router needed.</p></div><button class="tgl" id="hsToggle"><i></i></button></div>
+    <div class="set-row"><div><b>Start with PhoneController</b><p class="sub">Turns the hotspot on every time the app starts.</p></div><button class="tgl" id="hsAuto"><i></i></button></div>
+    <div class="set-row hsform"><label><span class="lbl">Network name</span><input id="hsSsidIn" maxlength="32" spellcheck="false"></label><label><span class="lbl">Password</span><input id="hsPassIn" maxlength="63" spellcheck="false"></label>
+      <div class="keys"><button class="key" id="hsSave">SAVE</button><button class="key" id="hsRegen" title="Phones that joined before will need to join again">NEW PASSWORD</button></div></div>
+    <p class="sub" id="hsMsg"></p>
+
+    <h3>Settings</h3>
+    <div class="set-row"><div><b>New phones start as</b><p class="sub">Each phone can be changed afterwards.</p></div>
+      <div class="keys" id="defaultType"><button class="key" data-v="x360"><i class="led"></i>XBOX</button><button class="key" data-v="ds4"><i class="led"></i>PS4</button></div></div>
+    <div class="set-row"><div><b>Phones can use mouse and keyboard</b><p class="sub">Needed for the Mouse and Keyboard screens on the phone. Stays on until you turn it off.</p></div><button class="tgl" id="mouseAllow"><i></i></button></div>
+
+    <h3>Remove</h3>
+    <div class="set-row"><div><b>Uninstall PhoneController</b><p class="sub">Disconnects phones and removes PhoneController from this laptop.</p></div><button class="key" id="uninstallBtn">UNINSTALL…</button></div>
+  </section>
+
+</div>
+
+<dialog id="uninstallDlg">
+  <h3>Uninstall PhoneController</h3>
+  <label class="chk"><input type="checkbox" id="unFirewall" checked> Remove the network permission</label>
+  <label class="chk"><input type="checkbox" id="unFiles" checked> Delete PhoneController and its settings</label>
+  <label class="chk"><input type="checkbox" id="unDriver"> Also remove the controller driver <span class="sub">(leave off if you use DS4Windows or similar)</span></label>
+  <div class="dlg-actions"><button class="key" id="unCancel">CANCEL</button><button class="key orange" id="unConfirm">UNINSTALL</button></div>
+</dialog>
+
+<div id="stopped" class="stopped hidden">
+  <div><img src="icon-192.png" alt=""><h2 id="stoppedTitle">PhoneController has stopped</h2><p class="sub" id="stoppedText">You can close this window.</p></div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

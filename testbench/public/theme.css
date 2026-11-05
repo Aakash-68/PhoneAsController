@@ -1,0 +1,27 @@
+/* Design tokens for every page (phone, manager, diagnostics).
+   Swap this file to restyle the whole app; components only use these variables. */
+:root {
+  /* surfaces */
+  --bg: #0d1017;
+  --panel: #161b26;
+  --panel-2: #1e2533;
+  --line: #262d3d;
+  /* text */
+  --text: #e6e9ef;
+  --muted: #8a93a6;
+  /* status */
+  --good: #4ade80;
+  --warn: #facc15;
+  --bad: #f87171;
+  /* brand + interaction */
+  --accent: #60a5fa;
+  --on-accent: #0b1220;
+  /* the current phone's player colour (set at runtime) */
+  --player: var(--accent);
+  /* shape + type */
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 16px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --shadow: 0 8px 30px rgb(0 0 0 / 0.35);
+}

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0e0f11">
+<title>PhoneController</title>
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="phone.css">
+</head>
+<body class="phone">
+
+  <!-- ===================== HOME ===================== -->
+  <main class="home">
+    <header class="h-top">
+      <div class="island static"><i class="lb"></i><b class="pn player-tag">P–</b><span class="msg"></span><span class="ping"><b class="pingv">–</b>ms</span></div>
+    </header>
+
+    <section class="h-hero">
+      <img src="icon-192.png" alt="" class="h-icon">
+      <div>
+        <h1 id="playerName">PhoneController</h1>
+        <button class="linkish" id="phoneChange"><span id="phoneModel">Pick your phone</span> · change</button>
+      </div>
+    </section>
+
+    <section class="h-type">
+      <span class="lbl">Acts as</span>
+      <div class="seg" id="vtypeSeg"><button data-v="x360">Xbox</button><button data-v="ds4">PS4</button><button data-v="off">Off</button></div>
+    </section>
+
+    <section class="tiles">
+      <button class="tile" id="padOpen"><i class="ti pad"></i><b>Gamepad</b><small id="padTypeName">Xbox layout</small></button>
+      <button class="tile" id="wheelOpen"><i class="ti wheel"></i><b>Wheel</b><small>steer · pedals</small></button>
+      <button class="tile" id="mouseOpen"><i class="ti mouse"></i><b>Mouse</b><small>slide it on the table</small></button>
+      <button class="tile" id="keysOpen"><i class="ti keys"></i><b>Keyboard</b><small>WASD · your keys</small></button>
+    </section>
+
+    <button class="wide hudOpen">Layout &amp; HUD options</button>
+
+    <nav class="bar tabs">
+      <button data-tab="pad" class="active">Gamepad</button>
+      <button data-tab="wheel">Wheel</button>
+      <button data-tab="mouse">Mouse</button>
+      <button data-tab="ping">Ping test</button>
+      <button data-tab="touch">Touch test</button>
+    </nav>
+
+    <!-- ===== Pad settings ===== -->
+    <section class="view" id="view-padinfo">
+      <div class="card">
+        <h3>Tilt triggers</h3>
+        <p class="small muted">Dip the <b>right</b> side down for <b>RT / R2</b>, the <b>left</b> side for <b>LT / L2</b>. More tilt = harder press.</p>
+        <label class="row"><input type="checkbox" id="tiltOn" checked> Enable tilt triggers</label>
+        <label class="row"><input type="checkbox" id="hapticDetents" checked> Haptic clicks at 50% and 100%</label>
+        <div class="row wrap">
+          <button class="primary" id="calibStart">Calibrate tilt</button>
+          <button id="calibReset">Reset</button>
+        </div>
+        <div class="small" id="calibStatus"></div>
+        <div id="defaultCurve">
+          <label class="row">Dead zone <input type="range" id="tiltDead" min="0" max="20" step="1"> <b id="tiltDeadV"></b>°</label>
+          <label class="row">Full press at <input type="range" id="tiltFull" min="10" max="60" step="1"> <b id="tiltFullV"></b>°</label>
+        </div>
+        <div class="small muted" id="tiltLive">waiting for motion sensor…</div>
+      </div>
+      <div class="card">
+        <h3>On-screen triggers</h3>
+        <label class="row">Trigger input
+          <select id="padTrigMode">
+            <option value="slide">Slide: finger height, back to 0 on release</option>
+            <option value="lever">Lever: stays where you leave it</option>
+            <option value="pressure">Pressure: press harder</option>
+            <option value="digital">On / off</option>
+          </select></label>
+        <p class="small muted">Tilt works at the same time: the higher of the two wins. Double-tap a stick and hold to click it (L3 / R3).</p>
+      </div>
+      <div class="card">
+        <h3>Pressure calibration</h3>
+        <p class="small muted">Used by "Pressure" triggers and wheel pedals. Calibrate a light touch (0%) and a hard press (100%).</p>
+        <div class="row wrap">
+          <button class="primary" id="pressCalib">Calibrate pressure</button>
+          <button id="pressReset">Reset</button>
+        </div>
+        <div class="small pressStatus"></div>
+      </div>
+    </section>
+
+    <!-- ===== Wheel settings ===== -->
+    <section class="view hidden" id="view-wheelinfo">
+      <p class="small muted">Steering drives the <b>left stick</b>. Gas = <b>RT / R2</b>, brake = <b>LT / L2</b>.</p>
+      <div class="card">
+        <h3>Steering</h3>
+        <label class="row">Steer by
+          <select id="steerSource">
+            <option value="touch">Touch wheel: drag the wheel to turn</option>
+            <option value="tilt">Tilt: turn the whole phone</option>
+            <option value="buttons">Buttons: hold ◀ / ▶ to steer</option>
+          </select></label>
+        <div id="btnSteerSettings">
+          <label class="row">Time to full lock <input type="range" id="btnRamp" min="0" max="800" step="20"> <b id="btnRampV"></b> ms</label>
+          <label class="row">Return to centre <input type="range" id="btnReturn" min="0" max="800" step="20"> <b id="btnReturnV"></b> ms</label>
+        </div>
+        <div id="touchSteerSettings">
+          <label class="row">Turn for full lock <input type="range" id="touchLock" min="45" max="450" step="15"> <b id="touchLockV"></b>°</label>
+          <label class="row"><input type="checkbox" id="autoCentre"> Spring back to centre when you let go</label>
+          <label class="row">Return speed <input type="range" id="centreSpeed" min="90" max="1440" step="30"> <b id="centreSpeedV"></b>°/s</label>
+        </div>
+        <div id="tiltSteerSettings">
+          <p class="small muted">Hold the phone like a wheel. Hold it straight when opening: that becomes centre.</p>
+          <label class="row">Full lock at <input type="range" id="wheelLock" min="15" max="90" step="1"> <b id="wheelLockV"></b>°</label>
+          <label class="row">Centre dead zone <input type="range" id="wheelDead" min="0" max="10" step="0.5"> <b id="wheelDeadV"></b>°</label>
+          <div class="small muted" id="wheelLive"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Pedals</h3>
+        <label class="row">Gas
+          <select id="gasMode">
+            <option value="slide">Slide: finger height, springs back</option>
+            <option value="lever">Lever: stays where you leave it</option>
+            <option value="pressure">Pressure: press harder</option>
+            <option value="digital">On / off</option>
+          </select></label>
+        <label class="row">Brake
+          <select id="brakeMode">
+            <option value="slide">Slide: finger height, springs back</option>
+            <option value="lever">Lever: stays where you leave it</option>
+            <option value="pressure">Pressure: press harder</option>
+            <option value="digital">On / off</option>
+          </select></label>
+        <label class="row">Handbrake button
+          <select id="hbBtn">
+            <option value="0">A / ✕</option><option value="1">B / ○</option><option value="2">X / □</option><option value="3">Y / △</option>
+            <option value="9">LB / L1</option><option value="11">RB / R1</option><option value="14">L3</option><option value="15">R3</option>
+          </select></label>
+        <p class="small muted">Other wheel buttons: shift − / + = LB / RB · indicators = D-pad ← / → · hazards = D-pad ↓ · lights = D-pad ↑ · horn = L3 · camera = R3 · reset = View · menu = Start. Bind them in the game's controls if it uses different ones.</p>
+        <div class="small pressStatus"></div>
+      </div>
+    </section>
+
+    <!-- ===== Trackpad settings ===== -->
+    <section class="view hidden" id="view-mouseinfo">
+      <p class="small muted">1 finger moves · tap = left click · 2-finger tap = right click · 2-finger drag = scroll. Hold L / M / R and drag with another finger.</p>
+      <p class="warn small mousePerm hidden"></p>
+      <div class="card">
+        <h3>Feel</h3>
+        <label class="row">Speed <input type="range" id="mouseSens" min="0.5" max="6" step="0.1"> <b id="mouseSensV"></b></label>
+        <label class="row">Acceleration <input type="range" id="mouseAccel" min="0" max="2" step="0.1"> <b id="mouseAccelV"></b></label>
+        <label class="row">Scroll speed <input type="range" id="mouseScrollSpeed" min="1" max="15" step="1"> <b id="mouseScrollSpeedV"></b></label>
+        <label class="row"><input type="checkbox" id="mouseNatural"> Natural scrolling</label>
+      </div>
+      <div class="card">
+        <h3>Table mouse</h3>
+        <p class="small muted">Lay the phone flat, screen up, and slide it like a mouse. The big L and R areas are the buttons. Lift it to reposition, just like a real mouse.</p>
+        <label class="row"><input type="checkbox" id="mouseTableOn"> Use the table mouse on the mouse screen</label>
+        <label class="row">Cursor speed <input type="range" id="mouseTableSpeed" min="4" max="48" step="1"> <b id="mouseTableSpeedV"></b></label>
+        <label class="row">Sensitivity <input type="range" id="mouseTableSens" min="0.5" max="2.5" step="0.1"> <b id="mouseTableSensV"></b></label>
+        <p class="small muted">Raise sensitivity if gentle movement is missed; lower it if the cursor twitches. Works best on a hard, smooth surface and with deliberate strokes.</p>
+      </div>
+      <div class="card">
+        <h3>Air mouse</h3>
+        <p class="small muted">Move the phone to move the cursor: turn left / right, tilt up / down. Works held upright or flat like a remote. Tap the pad to click; L / M / R and the scroll strip still work.</p>
+        <label class="row"><input type="checkbox" id="mouseAirOn"> Use the air mouse on the mouse screen</label>
+        <label class="row">Air speed <input type="range" id="mouseAirSpeed" min="10" max="90" step="1"> <b id="mouseAirSpeedV"></b></label>
+        <label class="row"><input type="checkbox" id="mouseAirHold"> Only move while a finger is on the pad (lift to reposition)</label>
+      </div>
+    </section>
+
+    <!-- ===== Diagnostics ===== -->
+    <section class="view hidden" id="view-ping">
+      <div class="row">
+        <label>Rate <select id="pingRate"><option>100</option><option selected>250</option><option>500</option><option>1000</option></select> Hz</label>
+        <label>Count <select id="pingCount"><option>500</option><option selected>2000</option><option>5000</option><option>20000</option></select></label>
+        <button class="primary" id="pingStart">Start</button>
+      </div>
+      <p class="small muted">Round trip phone → laptop → phone. One-way ≈ RTT / 2.</p>
+      <div class="stats" id="pingStats"></div>
+      <canvas class="hist" id="pingHist"></canvas>
+      <table><thead><tr><th>Transport</th><th>Hz</th><th>p50</th><th>p95</th><th>p99</th><th>max</th><th>jitter</th><th>loss</th></tr></thead><tbody id="runs"></tbody></table>
+    </section>
+    <section class="view hidden" id="view-touch">
+      <div id="touchArea"><div class="hint">Drag fingers here</div></div>
+      <div class="stats" id="touchStats"></div>
+      <canvas class="hist" id="touchHist"></canvas>
+      <button id="touchReset">Reset stats</button>
+    </section>
+
+    <footer class="h-foot small muted">
+      <span class="dot" id="wsDot"></span><span id="wsLabel">connecting…</span>
+      <select id="transport" title="Connection type"><option value="ws">WebSocket</option><option value="rtc">WebRTC (UDP-like)</option></select>
+      <span class="dot" id="rtcDot" title="WebRTC channel"></span>
+      <span id="clock">sync –</span>
+      <span id="env"></span>
+    </footer>
+  </main>
+
+  <!-- ===================== PHONE PICKER ===================== -->
+  <div id="picker" class="sheet hidden">
+    <div class="sheet-in">
+      <header><b>Which phone is this?</b><span class="sub">So the buttons sit at real controller spacing.</span><button class="x" id="pkSkip" aria-label="Skip">✕</button></header>
+      <div class="pk-list" id="pkList"></div>
+    </div>
+  </div>
+
+  <!-- ===================== HUD SHEET ===================== -->
+  <div id="hudSheet" class="sheet hidden" data-ctx="home">
+    <div class="sheet-in">
+      <header><b>Layout &amp; HUD</b><span class="sub" id="hPhone"></span><button id="hPhoneChange">Change phone</button><button class="x" id="hClose" aria-label="Close">✕</button></header>
+      <div class="grid">
+        <label>Size</label><div class="seg" id="hSize"><button data-v="real">Real size</button><button data-v="fit">Fill screen</button></div>
+        <label>Scale <b id="hScaleV"></b></label><input type="range" id="hScale" min="80" max="120" step="1">
+        <label>Opacity <b id="hOpacityV"></b></label><input type="range" id="hOpacity" min="30" max="100" step="1">
+        <label data-only="home pad">Show</label>
+        <div class="row wrap" data-only="home pad">
+          <label class="opt"><input type="checkbox" class="sw" id="hShell"> Controller shell</label>
+          <label class="opt"><input type="checkbox" class="sw" id="hLabels"> Labels</label>
+          <label class="opt"><input type="checkbox" class="sw" id="hStats"> Latency stats</label>
+        </div>
+        <label data-only="home keys">Movement</label><div class="seg" id="hMove" data-only="home keys"><button data-v="wasd">WASD</button><button data-v="arrows">Arrows</button><button data-v="none">None</button></div>
+        <label data-only="home keys">Keys</label><div class="chips" id="hChips" data-only="home keys"></div>
+      </div>
+      <footer><span class="sub" id="hNote"></span>
+        <button id="padZero" data-only="pad">Zero tilt</button>
+        <button id="hReset" data-only="home pad">Reset layout</button>
+        <button class="primary" id="hEdit" data-only="pad">Edit layout</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="wheelSheet" class="sheet hidden" data-ctx="wheel">
+    <div class="sheet-in">
+      <header><b>Wheel HUD</b><span class="sub">pedals and layout</span><button class="x" id="wsClose" aria-label="Close">✕</button></header>
+      <div class="grid">
+        <label>Gas</label><div class="seg" id="wsGas"><button data-v="slide">0–100</button><button data-v="lever">Lever</button><button data-v="pressure">Pressure</button><button data-v="digital">100 on press</button></div>
+        <label>Brake</label><div class="seg" id="wsBrake"><button data-v="slide">0–100</button><button data-v="lever">Lever</button><button data-v="pressure">Pressure</button><button data-v="digital">100 on press</button></div>
+        <label>Opacity <b id="wsOpacityV"></b></label><input type="range" id="wsOpacity" min="30" max="100" step="1">
+      </div>
+      <footer><span class="sub" id="wsNote">0–100: finger height sets the amount · Lever: stays where you leave it · 100 on press: full the moment you touch</span>
+        <button id="wsReset">Reset layout</button>
+        <button class="primary" id="wsEdit">Edit layout</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ===== Calibration wizard (tilt + pressure) ===== -->
+  <div id="calib" class="hidden">
+    <div class="calib-head">
+      <span id="calibStep" class="muted small"></span>
+      <button id="calibCancel">✕ Cancel</button>
+    </div>
+    <h2 id="calibTitle"></h2>
+    <p id="calibHint" class="muted"></p>
+    <canvas id="calibGauge"></canvas>
+    <div id="calibTarget" class="hidden"></div>
+    <div id="calibCount"></div>
+    <div id="calibResult" class="small"></div>
+    <div class="row calib-actions">
+      <button class="primary" id="calibRecord">Record</button>
+      <button id="calibRetry" class="hidden">↻ Retry</button>
+      <button class="primary hidden" id="calibNext">Next →</button>
+    </div>
+    <div id="calibSummary" class="hidden">
+      <canvas id="calibCurve"></canvas>
+      <table><thead id="calibHead"></thead><tbody id="calibTable"></tbody></table>
+      <div class="row calib-actions" id="calibActions"></div>
+    </div>
+  </div>
+
+  <!-- ===================== GAMEPAD (laid out in mm by hud.js) ===================== -->
+  <div id="pad" class="overlay ctlr hidden">
+    <svg class="shell" aria-hidden="true"><path/></svg>
+    <button class="exit" id="padClose" aria-label="Back">‹</button>
+    <div class="padinfo" id="padInfo">–</div>
+
+    <div class="ctl trig" data-id="lt" data-name="Left trigger" data-trigger="L2" id="l2Btn"><i class="tbody"><i class="tfill"></i></i><span class="tl"><b class="g-xb">LT</b><b class="g-ps">L2</b></span><b class="tv">0%</b></div>
+    <button class="ctl bump" data-id="lb" data-name="Left bumper" data-btn="9"><span class="tl"><b class="g-xb">LB</b><b class="g-ps">L1</b></span></button>
+    <button class="ctl bump" data-id="rb" data-name="Right bumper" data-btn="11"><span class="tl"><b class="g-xb">RB</b><b class="g-ps">R1</b></span></button>
+    <div class="ctl trig r" data-id="rt" data-name="Right trigger" data-trigger="R2" id="r2Btn"><i class="tbody"><i class="tfill"></i></i><span class="tl"><b class="g-xb">RT</b><b class="g-ps">R2</b></span><b class="tv">0%</b></div>
+
+    <div class="ctl stick" data-id="ls" data-name="Left stick" data-stick="l"><i class="cap"><i class="dish"></i></i><i class="well"></i><i class="arc"></i></div>
+    <div class="ctl stick" data-id="rs" data-name="Right stick" data-stick="r"><i class="cap"><i class="dish"></i></i><i class="well"></i><i class="arc"></i></div>
+
+    <div class="ctl dpad" data-id="dpad" data-name="D-pad">
+      <i class="cross"></i>
+      <button data-btn="4" class="u" aria-label="Up"></button><button data-btn="7" class="r" aria-label="Right"></button>
+      <button data-btn="5" class="d" aria-label="Down"></button><button data-btn="6" class="l" aria-label="Left"></button>
+    </div>
+    <div class="ctl face" data-id="face" data-name="Face buttons">
+      <button data-btn="3" class="fb y" style="--g:#c9a04a;--gp:#559e9a"><b class="g-xb">Y</b><b class="g-ps"><svg viewBox="0 0 24 24"><path d="M12 5l7.5 13h-15z"/></svg></b></button>
+      <button data-btn="2" class="fb x" style="--g:#6f8db0;--gp:#9a78a3"><b class="g-xb">X</b><b class="g-ps"><svg viewBox="0 0 24 24"><rect x="5.5" y="5.5" width="13" height="13" rx="1"/></svg></b></button>
+      <button data-btn="1" class="fb b" style="--g:#c8714f;--gp:#c8714f"><b class="g-xb">B</b><b class="g-ps"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/></svg></b></button>
+      <button data-btn="0" class="fb a" style="--g:#86a47e;--gp:#6f8db0"><b class="g-xb">A</b><b class="g-ps"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></b></button>
+    </div>
+    <button class="ctl sys" data-id="view" data-name="View / Share" data-btn="12"><span class="g-xb"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="11" height="9" rx="2"/><rect x="9" y="10" width="11" height="9" rx="2"/></svg></span><span class="g-ps tag">SHARE</span></button>
+    <button class="ctl sys" data-id="menu" data-name="Menu / Options" data-btn="13"><span class="g-xb"><svg viewBox="0 0 24 24"><path d="M5 8h14M5 12h14M5 16h14"/></svg></span><span class="g-ps tag">OPTIONS</span></button>
+    <button class="ctl home" data-id="home" data-name="Home" data-btn="16"><i></i></button>
+    <div class="ctl touch" data-id="touch" data-name="Touchpad" data-btn="17"><i class="lightbar"></i><span>touchpad</span></div>
+
+    <div class="editbar">
+      <span class="sub" id="eSel">Drag a control to move it</span>
+      <button id="eDown" aria-label="Smaller">−</button><button id="eUp" aria-label="Bigger">+</button>
+      <button id="eReset">Reset</button><button class="primary" id="eDone">Done</button>
+    </div>
+  </div>
+
+  <!-- ===================== WHEEL ===================== -->
+  <div id="wheel" class="overlay ctlr hidden">
+    <button class="exit" id="wheelClose" aria-label="Back">‹</button>
+    <div class="seg steerseg" id="steerSeg"><button data-v="touch">Wheel</button><button data-v="tilt">Tilt</button><button data-v="buttons">Buttons</button></div>
+    <button class="pillbtn" id="wheelCentre">⟲ centre</button>
+    <div class="padinfo" id="wheelInfo">–</div>
+
+    <!-- left corner: the wheel (or ◀ ▶ in buttons mode) with shift paddles behind it -->
+    <div id="wheelZone" data-eid="wheel" data-name="Wheel">
+      <svg id="wheelHud" viewBox="-110 -110 220 220" aria-hidden="true">
+        <defs>
+          <radialGradient id="rimGrad" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="97">
+            <stop offset="0.76" stop-color="#0c0d0f"/><stop offset="0.81" stop-color="#202226"/><stop offset="0.87" stop-color="#2b2d32"/><stop offset="0.93" stop-color="#18191c"/><stop offset="0.99" stop-color="#0a0a0c"/>
+          </radialGradient>
+          <linearGradient id="plateGrad" x1="0" y1="-30" x2="0" y2="76" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#26282d"/><stop offset=".5" stop-color="#191a1e"/><stop offset="1" stop-color="#131417"/></linearGradient>
+          <pattern id="perf" width="3.4" height="3.4" patternUnits="userSpaceOnUse"><circle cx="1.7" cy="1.7" r=".55" fill="#000" fill-opacity=".6"/></pattern>
+        </defs>
+        <g id="hudHorizon"><line x1="-200" y1="0" x2="200" y2="0" class="horizon"/><line x1="0" y1="-200" x2="0" y2="-104" class="horizon"/></g>
+        <g id="hudLock"></g>
+        <path id="hudArc" class="steer-arc" d=""/>
+        <g id="hudWheel">
+          <!-- spoke plate: two side spokes and a tapered bottom spoke, like a 3-spoke race wheel -->
+          <path d="M-74 -6 C-52 -7 -38 -16 -28 -26 Q0 -33 28 -26 C38 -16 52 -7 74 -6 L75 12 C54 12 40 18 28 28 L15 76 L-15 76 L-28 28 C-40 18 -54 12 -75 12 Z" fill="url(#plateGrad)" stroke="#2e3036" stroke-width=".8"/>
+          <g fill="#08090a"><circle cy="-23" r="2.3"/><circle cx="19.9" cy="-11.5" r="2.3"/><circle cx="19.9" cy="11.5" r="2.3"/><circle cy="23" r="2.3"/><circle cx="-19.9" cy="11.5" r="2.3"/><circle cx="-19.9" cy="-11.5" r="2.3"/></g>
+          <!-- leather rim, perforated, with thumb grips where the spokes meet it -->
+          <circle r="84" fill="none" stroke="url(#rimGrad)" stroke-width="22"/>
+          <path d="M-90 -12 Q-70 3 -90 22 Q-68 26 -66 4 Q-68 -16 -90 -12 Z M90 -12 Q70 3 90 22 Q68 26 66 4 Q68 -16 90 -12 Z M-20 76 Q0 68 20 76 L20 88 L-20 88 Z" fill="#1d1f23"/>
+          <circle r="84" fill="none" stroke="url(#perf)" stroke-width="20"/>
+          <path d="M-90 -12 Q-70 3 -90 22 Q-68 26 -66 4 Q-68 -16 -90 -12 Z M90 -12 Q70 3 90 22 Q68 26 66 4 Q68 -16 90 -12 Z" fill="url(#perf)"/>
+          <circle r="94.5" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="1"/>
+          <rect x="-3.2" y="-95" width="6.4" height="21" rx="1.6" class="wheel-mark"/>
+          <!-- hub -->
+          <circle r="16" fill="#0d0e10" stroke="#34373d" stroke-width="1.6"/>
+          <circle r="11.5" fill="#141518"/>
+          <text id="hudDir" y="44" class="hud-deg"></text>
+          <text id="hudDeg" y="58" class="hud-deg">0°</text>
+        </g>
+        <text id="hudPct" y="3.2" class="hud-pct">0</text>
+        <g id="hudPointer"><path d="M0 -110 L-6 -100 L6 -100 Z" class="wheel-pointer"/></g>
+      </svg>
+      <div id="wheelTouch"></div>
+      <div class="wpad steerbtn" data-steer="-1" data-eid="steerL" data-name="Steer left"><svg viewBox="0 0 24 24"><path d="M15 4 L7 12 L15 20"/></svg></div>
+      <div class="wpad steerbtn" data-steer="1" data-eid="steerR" data-name="Steer right"><svg viewBox="0 0 24 24"><path d="M9 4 L17 12 L9 20"/></svg></div>
+      <div class="wpad paddle-s l" data-btn="9" data-eid="padL" data-name="Shift −"><b>−</b><small>LB</small></div>
+      <div class="wpad paddle-s r" data-btn="11" data-eid="padR" data-name="Shift +"><b>+</b><small>RB</small></div>
+    </div>
+
+    <!-- centre: indicators, face buttons, car functions -->
+    <div id="wheelMid">
+      <div class="wrow" data-eid="ind" data-name="Indicators">
+        <div class="wb ind" data-btn="6" data-blink="l"><svg viewBox="0 0 24 24"><path class="f" d="M3 12 L11 5 V9.5 H20 V14.5 H11 V19 Z"/></svg><small>D←</small></div>
+        <div class="wb" data-btn="5" data-blink="hz"><svg viewBox="0 0 24 24"><path d="M12 3.5 L21.5 19.5 H2.5 Z"/><path d="M12 9 L16.6 17 H7.4 Z"/></svg><small>D↓</small></div>
+        <div class="wb ind" data-btn="7" data-blink="r"><svg viewBox="0 0 24 24"><path class="f" d="M21 12 L13 5 V9.5 H4 V14.5 H13 V19 Z"/></svg><small>D→</small></div>
+      </div>
+      <div class="wabxy" data-eid="abxy" data-name="Face buttons">
+        <div class="wb fbw y" data-btn="3"><b class="gx">Y</b><b class="gps">△</b></div>
+        <div class="wb fbw x" data-btn="2"><b class="gx">X</b><b class="gps">□</b></div>
+        <div class="wb fbw b" data-btn="1"><b class="gx">B</b><b class="gps">○</b></div>
+        <div class="wb fbw a" data-btn="0"><b class="gx">A</b><b class="gps">✕</b></div>
+      </div>
+      <div class="wrow" data-eid="func" data-name="Horn · lights · camera">
+        <div class="wb" data-btn="14"><svg viewBox="0 0 24 24"><path d="M3 10 V14 H7 L13 18.5 V5.5 L7 10 Z"/><path d="M16.5 9.2 Q18.4 12 16.5 14.8 M19.2 7 Q22.6 12 19.2 17"/></svg><small>L3</small></div>
+        <div class="wb" data-btn="4"><svg viewBox="0 0 24 24"><path d="M11 5.5 C5.5 5.5 4.5 9 4.5 12 C4.5 15 5.5 18.5 11 18.5 Z"/><path d="M14.5 7.5 H20.5 M14.5 12 H20.5 M14.5 16.5 H20.5"/></svg><small>D↑</small></div>
+        <div class="wb" data-btn="15"><svg viewBox="0 0 24 24"><path d="M3 8 H7 L9 5.5 H15 L17 8 H21 V18.5 H3 Z"/><circle cx="12" cy="13" r="3.3"/></svg><small>R3</small></div>
+        <div class="wb" data-btn="12"><svg viewBox="0 0 24 24"><path d="M19.5 12 A7.5 7.5 0 1 1 17.3 6.7"/><path d="M19.5 3.5 V8 H15"/></svg><small>VIEW</small></div>
+        <div class="wb" data-btn="13"><svg viewBox="0 0 24 24"><path d="M5 7 H19 M5 12 H19 M5 17 H19"/></svg><small>MENU</small></div>
+      </div>
+    </div>
+
+    <!-- right corner: handbrake over the brake, gas on the edge -->
+    <div class="wpad hbrake" id="hbrake" data-btn="0" data-eid="hbrake" data-name="Handbrake"><svg viewBox="0 0 24 24"><path d="M6.5 20 L16 6"/><circle cx="17" cy="4.8" r="2.3"/><path d="M3.5 20.5 H12.5"/></svg><span>HANDBRAKE</span></div>
+    <div class="pedal" data-pedal="brake" id="brakePedal" data-eid="brake" data-name="Brake"><span>BRAKE</span></div>
+    <div class="pedal" data-pedal="gas" id="gasPedal" data-eid="gas" data-name="Gas"><span>GAS</span></div>
+    <div class="editbar">
+      <span class="sub" id="wSel">Drag a control to move it</span>
+      <button id="wDown" aria-label="Smaller">−</button><button id="wUp" aria-label="Bigger">+</button>
+      <button id="wReset">Reset</button><button class="primary" id="wDone">Done</button>
+    </div>
+  </div>
+
+  <!-- ===================== TRACKPAD ===================== -->
+  <div id="mouse" class="overlay ctlr hidden">
+    <button class="exit" id="mouseClose" aria-label="Back">‹</button>
+    <div class="padinfo" id="mouseInfo">–</div>
+    <div class="seg airseg" id="mouseModeSeg"><button data-v="table">Table</button><button data-v="touch">Touch</button><button data-v="air">Air</button></div>
+    <p class="warn small mousePerm hidden permline"></p>
+    <div id="tableState"></div>
+    <div id="mouseSurface"><span>trackpad</span></div>
+    <div id="mouseScroll"><span>scroll</span></div>
+    <div class="mouse-buttons">
+      <div class="mbtn" id="mouseBtnL">L</div>
+      <div class="mbtn" id="mouseBtnM">M</div>
+      <div class="mbtn" id="mouseBtnR">R</div>
+    </div>
+  </div>
+
+  <!-- ===================== KEYBOARD ===================== -->
+  <div id="keys" class="overlay ctlr hidden">
+    <button class="exit" id="keysClose" aria-label="Back">‹</button>
+    <p class="warn small mousePerm hidden permline"></p>
+    <div id="kmove"></div>
+    <div id="kgrid"></div>
+  </div>
+
+  <div id="kicked" class="kicked hidden">
+    <div>
+      <h2>Disconnected</h2>
+      <p class="muted" id="kickedReason">The laptop disconnected this phone.</p>
+      <button class="primary" id="kickedReconnect">Reconnect</button>
+    </div>
+  </div>
+
+  <script>
+    // Every controller screen gets the island (player light · number · latency · HUD button).
+    for (const id of ['pad', 'wheel', 'mouse', 'keys']) document.getElementById(id).insertAdjacentHTML('afterbegin',
+      '<div class="island"><i class="lb"></i><b class="pn player-tag">P–</b><span class="msg"></span><span class="ping"><b class="pingv">–</b>ms</span>' +
+      (id !== 'mouse' ? '<button class="gear ' + (id === 'wheel' ? 'wheelHudOpen' : 'hudOpen') + '" aria-label="HUD options"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></svg></button>' : '') + '</div>');
+  </script>
+  <script type="module" src="phone.js"></script>
+</body>
+</html>

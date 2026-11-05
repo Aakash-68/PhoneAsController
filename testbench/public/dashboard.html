@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Testbench Dashboard</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bar">
+    <b>PhoneController testbench</b>
+    <span class="dot" id="dot"></span>
+    <span class="grow"></span>
+    <label class="row" title="What games see when a phone opens Pad or Wheel">
+      Virtual controller
+      <select id="vpadType">
+        <option value="x360">Xbox 360</option>
+        <option value="ds4">DualShock 4</option>
+        <option value="off">Off</option>
+      </select>
+      <span class="small muted" id="vpadStatus"></span>
+    </label>
+    <label class="row" id="mouseAllowRow" title="Lets the phone's Mouse screen move this laptop's real cursor">
+      <input type="checkbox" id="mouseAllow"> Allow mouse control
+    </label>
+    <span class="small muted">Results: testbench/results/runs.jsonl</span>
+  </div>
+  <div class="grid">
+    <div class="card" style="grid-column:1/-1">
+      <h3>Connect the phone: scan the QR code for the network you're testing</h3>
+      <p class="small muted">HTTPS gives more accurate touch timing (Chrome warns about the certificate: Advanced → Proceed).
+        For a wired test, turn on USB tethering on the phone; a new adapter appears below within a few seconds.</p>
+      <div class="qrs" id="qrs">loading…</div>
+    </div>
+    <div id="clients" style="display:contents"></div>
+    <div class="card" style="grid-column:1/-1">
+      <h3>Ping runs (all clients)</h3>
+      <table><thead><tr><th>Time</th><th>Client</th><th>Network</th><th>Transport</th><th>Hz</th><th>p50</th><th>p95</th><th>p99</th><th>max</th><th>jitter</th><th>loss</th></tr></thead><tbody id="runs"></tbody></table>
+    </div>
+  </div>
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>

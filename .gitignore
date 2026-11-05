@@ -1,0 +1,8 @@
+node_modules/
+bin/
+obj/
+out/
+build/
+release/
+*.log
+results/
