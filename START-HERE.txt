@@ -1,0 +1,33 @@
+PhoneController: use your phone as a game controller or mouse for your Windows PC
+==================================================================================
+
+INSTALL
+1. Double-click Install.exe. It installs everything and starts the app.
+   - If Windows says "Windows protected your PC": click More info, then Run anyway.
+     (The app isn't commercially code-signed.)
+   - Say Yes when Windows asks for permission. This lets phones connect and installs
+     the controller driver.
+2. Next time, use the PhoneController shortcut on your Desktop.
+
+CONNECT YOUR PHONE (no internet or router needed)
+On the laptop, Wi-Fi must be switched on, but it doesn't need to be connected to anything.
+1. In the PhoneController window, with "Hotspot" selected, scan the "1 Join Wi-Fi" code
+   with the phone camera and tap Join.
+   If the phone warns "no internet", choose to stay connected.
+   If you have mobile data on and the next step won't load, turn mobile data off.
+2. Click "2 Open app" and scan that code.
+   On the security warning tap Advanced, then Proceed. This only happens once.
+
+USB CABLE INSTEAD
+1. Plug the phone in. On the phone turn on USB tethering:
+   Settings > Connections > Mobile Hotspot and Tethering > USB tethering
+2. Click "USB cable" in the PhoneController window and scan the code.
+
+USE THE PHONE AS A MOUSE
+1. Turn on "Phone can be the mouse" in the PhoneController window.
+2. On the phone open Mouse, lay it flat, screen up, on a hard table, and wait for "Ready".
+3. Slide it like a mouse. Tap the big L and R areas to click. Lift it to reposition.
+   Change the speed under the Mouse tab on the phone's home screen.
+
+REMOVE
+Windows Settings > Apps > Installed apps > PhoneController > Uninstall.
