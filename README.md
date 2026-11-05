@@ -19,7 +19,7 @@ Requires Windows 10 or 11, 64-bit.
 | **USB cable** | Plug in, turn on **USB tethering** on the phone, then scan the code under **USB cable**. | A data cable. No mobile data is used. |
 | **Same Wi-Fi** | Scan the code under **Wi-Fi**. | A network both devices are already on. |
 
-The phone page is plain HTTP, so it opens with no security warning; Chrome just shows **Not secure** in the address bar. On the hotspot, the Wi-Fi password protects the traffic. On a shared Wi-Fi, other people on that network could read it if the connection falls back from WebRTC to WebSocket, so use the hotspot or USB for anything private typed on the Keyboard screen.
+The phone page is plain HTTP, so it opens with no security warning; Chrome just shows **Not secure** in the address bar. On the hotspot, the Wi-Fi password protects the traffic. On a shared Wi-Fi, other people on that network may be able to read it, so use the hotspot or USB for anything private typed on the Keyboard screen.
 
 Tilt steering and controller motion need a secure page, which browsers require for motion sensors: open `https://<address>:8443` and tap **Advanced → Proceed** on the warning. The app makes its own certificate, because a public one can't exist offline. Fast touch input and precise timers also need that page, so the plain page can respond slightly later.
 
