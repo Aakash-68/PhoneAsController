@@ -15,13 +15,13 @@ Requires Windows 10 or 11, 64-bit.
 
 | | How | Needs |
 |---|---|---|
-| **Hotspot** (default) | The laptop makes its own password-protected Wi-Fi. Scan the **Step 1** code to join it, then the **Step 2** code to open the controller, or type `http://phonepad.local` (Android 13+; add `:8080` if the app shows it). | Laptop's Wi-Fi switched on, which Windows allows during aeroplane mode. It doesn't have to be connected to anything. |
+| **Hotspot** (default) | The laptop makes its own password-protected Wi-Fi. Scan the **Step 1** code to join it, then the **Step 2** code to open the controller, or type the address shown under it (with Secure phone address off, `http://phonepad.local` also works on Android 13+; add `:8080` if the app shows it). | Laptop's Wi-Fi switched on, which Windows allows during aeroplane mode. It doesn't have to be connected to anything. |
 | **USB cable** | Plug in, turn on **USB tethering** on the phone, then scan the code under **USB cable**. | A data cable. No mobile data is used. |
 | **Same Wi-Fi** | Scan the code under **Wi-Fi**. | A network both devices are already on. |
 
-The phone page is plain HTTP, so it opens with no security warning; Chrome just shows **Not secure** in the address bar. On the hotspot, the Wi-Fi password protects the traffic. On a shared Wi-Fi, other people on that network may be able to read it, so use the hotspot or USB for anything private typed on the Keyboard screen.
+The QR codes open the secure page `https://<address>:8443` by default, which tilt, motion sensors and fast touch need. The first time, the phone warns about the certificate: tap **Advanced → Proceed**. The app makes its own certificate, because a public one can't exist offline. To use the plain page instead (no warning, no tilt), turn off **Secure phone address** in Settings. The plain page is HTTP, and Chrome shows **Not secure** in the address bar. On the hotspot, the Wi-Fi password protects the traffic. On a shared Wi-Fi, other people on that network may be able to read it, so use the hotspot or USB for anything private typed on the Keyboard screen.
 
-Tilt steering and controller motion need a secure page, which browsers require for motion sensors: open `https://<address>:8443` and tap **Advanced → Proceed** on the warning. The app makes its own certificate, because a public one can't exist offline. Fast touch input and precise timers also need that page, so the plain page can respond slightly later.
+Tilt steering and controller motion only work on the secure page, because browsers only give motion sensors to secure pages. Fast touch input and precise timers also need it.
 
 **If the phone won't open the page on the hotspot:** Android may keep using mobile data because the hotspot has no internet. Choose to stay connected when it warns you, or turn mobile data off.
 

@@ -54,7 +54,13 @@ function setQr(svg, url, help) {
   $('qrUrl').classList.toggle('hidden', !url);
   $('joinHelp').textContent = help;
 }
-const hostOf = (n) => n.httpUrl.replace(/^http:\/\//, '').replace(/\/$/, '');
+// Secure (https :8443, the default) unlocks tilt, motion and fast touch on the phone; plain http opens with no warning.
+let secure = true;
+try { secure = localStorage.getItem('qrSecure') !== '0'; } catch {}
+const urlOf = (n) => (secure ? n.httpsUrl : n.httpUrl);
+const qrOf = (n) => (secure ? n.qrHttps : n.qrHttp);
+const hostOf = (n) => urlOf(n).replace(/\/$/, '');
+const SECURE_TIP = ' On the warning, tap Advanced, then Proceed: the laptop makes its own certificate.';
 function renderQr() {
   const tabs = joinTabs();
   if (!tabs.some((t) => t.id === joinTab)) joinTab = 'hotspot';
@@ -70,13 +76,13 @@ function renderQr() {
     setQr('', '', '');
   } else if (joinTab === 'usb') {
     const n = netOf('usb');
-    if (n) { shown = n; setQr(n.qrHttp, hostOf(n), 'Cable connected. Scan to open the controller.'); }
+    if (n) { shown = n; setQr(qrOf(n), hostOf(n), 'Cable connected. Scan to open the controller.' + (secure ? SECURE_TIP : '')); }
     else setQr('', '', 'Plug the phone in with a USB cable, then on the phone turn on Settings > Connections > Mobile Hotspot and Tethering > USB tethering. The code appears here. No mobile data is used.');
   } else {
     const n = nets.find((x) => x.address === joinTab);
-    if (n) { shown = n; setQr(n.qrHttp, hostOf(n), `The phone must be on the same ${n.label} network as this laptop.`); }
+    if (n) { shown = n; setQr(qrOf(n), hostOf(n), `The phone must be on the same ${n.label} network as this laptop.` + (secure ? SECURE_TIP : '')); }
   }
-  $('addrText').textContent = shown ? shown.nameUrl ?? hostOf(shown) : isHotspot && hs?.ssid ? hs.ssid : '–';
+  $('addrText').textContent = shown ? (!secure && shown.nameUrl) || hostOf(shown) : isHotspot && hs?.ssid ? hs.ssid : '–';
   renderJoinOverlay();
 }
 const hsProblem = () => (!hs ? '' : hs.status === 'off' ? 'The hotspot is off. Turn it on in Setup.' : hs.status === 'error' ? hs.error : 'Starting the hotspot…');
@@ -88,11 +94,11 @@ function renderHotspotSteps(n) {
   $('wifiOn').classList.toggle('hidden', !hs?.radioOff);
   if (!ready) return;
   $('qrWifi').innerHTML = hs.qrWifi;
-  $('qrApp').innerHTML = n.qrHttp;
+  $('qrApp').innerHTML = qrOf(n);
   $('hsSsid').textContent = hs.ssid;
   $('hsPass').textContent = hs.pass;
-  $('hsName').textContent = n.nameUrl ?? n.httpUrl.replace(/\/$/, '');
-  $('hsIp').textContent = n.nameUrl ? `If that address doesn't open, use ${n.httpUrl.replace(/\/$/, '')}.` : '';
+  $('hsName').textContent = (!secure && n.nameUrl) || hostOf(n);
+  $('hsIp').textContent = secure ? SECURE_TIP.trim() : n.nameUrl ? `If that address doesn't open, use ${hostOf(n)}.` : '';
 }
 // With phones connected the main panel shows them, so the steps open on request for the next phone.
 function renderJoinOverlay() {
@@ -106,6 +112,13 @@ function renderJoinOverlay() {
   $('emptyText').textContent = hotspotTab ? 'No internet or router needed: the laptop makes its own Wi-Fi hotspot.' : 'Follow the instructions on the left to connect a phone.';
   if (!hotspotTab) { $('hsSteps').classList.add('hidden'); $('hsNote').classList.add('hidden'); }
 }
+function renderSecure() { $('qrSecure').classList.toggle('is-on', secure); }
+$('qrSecure').onclick = () => {
+  secure = !secure;
+  try { localStorage.setItem('qrSecure', secure ? '1' : '0'); } catch {}
+  renderSecure(); renderQr();
+};
+renderSecure();
 $('addPhone').onclick = () => { document.querySelector('[data-view="devices"]').click(); joining = true; renderJoinOverlay(); };
 $('joinClose').onclick = () => { joining = false; renderJoinOverlay(); };
 $('wifiOn').onclick = () => changeHotspot({ wifiOn: true });
