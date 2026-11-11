@@ -8,7 +8,8 @@
 // .shouldPropagateKey), fullscreen or not, so on most phones nothing arrives here and the
 // keys just change the system volume. The settings card has a live test so the user can see
 // whether their browser passes them; we never claim it works.
-import { $, load, save } from './overlay.js';
+import { $, load, save, onOverlay } from './overlay.js';
+import { inApp, nativeCall } from './native.js';
 import { gp } from './gamepad.js';
 
 export const volTrig = { L2: 0, R2: 0 };
@@ -75,6 +76,13 @@ function clearAll(send) {
   if (was && send) commit();
 }
 
+// In the Android app the volume keys arrive from native code (no system volume change, no slider).
+// The app only swallows them while the gamepad is open and a mapping is on.
+function syncCapture() { nativeCall('setVolumeCapture', padOpen() && cfg.mode !== 'off'); }
+window.__pcNativeKey = (key, down, repeat) => {
+  onKey({ type: down ? 'keydown' : 'keyup', key: key === 'up' ? 'AudioVolumeUp' : 'AudioVolumeDown', keyCode: 0, repeat: !!repeat, preventDefault() {} });
+};
+
 export function initVolKeys(commitFn, isPadOpen) {
   commit = commitFn || commit;
   padOpen = isPadOpen || padOpen;
@@ -82,6 +90,7 @@ export function initVolKeys(commitFn, isPadOpen) {
   window.addEventListener('keyup', onKey, { capture: true });
   window.addEventListener('blur', () => clearAll(true));
   document.addEventListener('visibilitychange', () => { if (document.hidden) clearAll(true); });
+  onOverlay(syncCapture);
   renderSettings();
 }
 
@@ -114,9 +123,11 @@ function renderSettings() {
     $('volCustom').classList.toggle('hidden', cfg.mode !== 'custom');
     save('volkeys', { ...cfg });
     clearAll(true);
+    syncCapture();
   };
   mode.onchange = dn.onchange = up.onchange = sync;
   $('volCustom').classList.toggle('hidden', cfg.mode !== 'custom');
+  if (inApp) { $('volNote').remove(); $('volTest').innerHTML = '<span class="ok">Android app: volume keys work here, with no volume slider, while the gamepad is open.</span> · <span id="volSeen"></span>'; }
   renderTest();
 }
 
@@ -136,6 +147,7 @@ function flash() {
 function renderTest() {
   const el = $('volTest');
   if (!el) return;
+  if (inApp) { const s = $('volSeen'); if (s) s.textContent = seen.up || seen.down ? 'last press seen ✓' : ''; return; }
   const any = seen.up || seen.down;
   el.innerHTML = 'Test: press a volume key · ' +
     `<span class="${seen.down ? 'ok' : 'muted'}">Vol − ${seen.down ? 'detected ✓' : 'not yet'}</span> · ` +

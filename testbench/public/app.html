@@ -30,6 +30,7 @@
       <div class="term" id="qrUrl">–</div>
       <p class="sub help" id="joinHelp"></p>
       <button class="key hidden" id="addPhone">ADD A PHONE</button>
+      <div class="line"><span>Android app (optional)</span><button class="chipbtn" id="apkBtn" title="QR code to download the Android app from this laptop">GET APP</button></div>
       <div class="line"><span>New phones</span><button class="tgl" id="allowJoins" title="Turn off to stop new phones joining"><i></i></button></div>
       <div class="line"><span>Phone can be the mouse</span><button class="tgl" id="mouseAllow2" title="Lets phones move this laptop's mouse and press keys"><i></i></button></div>
     </section>
@@ -160,6 +161,15 @@
   </section>
 
 </div>
+
+<dialog id="apkDlg">
+  <h3>Android app (optional)</h3>
+  <p class="sub">The controller page works in any browser. The app adds volume keys as triggers (no volume slider), blocks the edge back-swipe while you play, real rumble strength, tilt with no certificate warning, and finds this laptop by itself.</p>
+  <div class="qr apkqr"><div id="apkQr"></div></div>
+  <div class="term" id="apkUrl"></div>
+  <p class="sub" id="apkHelp">Scan with the phone (connected to this laptop's hotspot, USB or the same Wi-Fi), download, and open the file. Android asks once to allow installs from this browser: allow it, then Install.</p>
+  <div class="keys"><button class="key" id="apkClose">CLOSE</button></div>
+</dialog>
 
 <dialog id="uninstallDlg">
   <h3>Uninstall PhoneController</h3>

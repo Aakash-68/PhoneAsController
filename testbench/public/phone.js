@@ -8,6 +8,10 @@ import { renderMouse } from './mouse.js';
 import { renderWizard } from './wizard.js';
 import './hud.js';
 import './keys.js';
+import { inApp } from './native.js';
+
+// Offer the optional Android app on Android browsers (never inside the app itself).
+if (!inApp && /Android/i.test(navigator.userAgent)) $('apkBan').classList.remove('hidden');
 
 $('env').textContent = [
   isSecureContext ? 'secure ✓' : 'insecure (use https for raw touch + motion)',

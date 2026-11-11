@@ -22,6 +22,16 @@ Copy-Item "$build\bridge\PhoneController.exe", "$build\bridge\PhoneController.ex
 Write-Host '2/5 Node.js runtime'
 Copy-Item (Get-Command node).Source "$out\runtime\node.exe"
 
+# Optional Android app: rebuilt when the signing key is on this PC (it lives outside the repo), otherwise the
+# committed copy is used. The laptop serves it for offline download; docs/ holds the website copy.
+$apkSrc = Join-Path $repo 'android\out\PhoneAsController.apk'
+if (Test-Path (Join-Path (Split-Path $repo -Parent) 'android-signing\phoneascontroller.jks')) {
+  Write-Host '   Android app'
+  & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo 'android\build.ps1') | Out-Null
+  if ($LASTEXITCODE) { throw 'Android build failed' }
+}
+if (Test-Path $apkSrc) { Copy-Item $apkSrc "$tb\public\PhoneAsController.apk"; Copy-Item $apkSrc "$repo\docs\PhoneAsController.apk" }
+
 Write-Host '3/5 server + phone pages'
 if (-not (Test-Path "$tb\node_modules")) { Push-Location $tb; & npm ci --omit=dev --no-audit --no-fund | Out-Null; Pop-Location; if ($LASTEXITCODE) { throw 'npm ci failed' } }
 foreach ($f in 'server.js', 'paths.js', 'players.js', 'setup.js', 'vigem.js', 'network.js', 'hotspotname.js', 'package.json') { Copy-Item "$tb\$f" "$out\app\" }

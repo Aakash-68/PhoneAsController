@@ -25,6 +25,18 @@ Tilt steering and controller motion only work on the secure page, because browse
 
 **If the phone won't open the page on the hotspot:** Android may keep using mobile data because the hotspot has no internet. Choose to stay connected when it warns you, or turn mobile data off.
 
+## Optional Android app
+
+The controller works in the phone's browser with nothing installed. The optional app (`PhoneAsController.apk`) wraps the same controller page and adds what a browser can't do:
+
+- the **volume keys** work as triggers, bumpers or any button (set in Controller settings), with no volume slider popping up
+- Android's **edge back-swipe** is blocked while you play
+- **rumble** follows the game's strength instead of on/off pulses
+- **tilt** works with no certificate warning
+- it **finds the laptop by itself** (hotspot, USB or the same Wi-Fi) and reconnects next time
+
+Get it from the [website](https://aakash-68.github.io/PhoneAsController/#android), or offline from the PC app: **GET APP** shows a QR code that downloads it from the laptop. Android asks once to allow installs from your browser. It isn't on the Play Store.
+
 ## Closing it
 
 Closing the PhoneController window stops everything within a few seconds: phones disconnect, and the hotspot, the network ports and all helper programs are gone. Nothing runs in the background or at startup. Only your settings stay on disk (hotspot name and password, phone names and colours). The controller driver stays installed but idle until you uninstall it.
@@ -66,6 +78,7 @@ Windows **Settings → Apps → Installed apps → PhoneController → Uninstall
 | `testbench/public/sticks.js`, `look.js`, `tilt.js`, `volkeys.js`, `padsettings.js` | Gamepad features: sticks (floating centre, dead zone, L3/R3 double-tap), touch-look, tilt triggers, volume keys, live settings drawer |
 | `bridge/` | `PhoneController.exe`: launcher, controller bridge (`--bridge`, ViGEm), hotspot helper (`--net`, Wi-Fi Direct) |
 | `installer/` | `Install.exe` source |
+| `android/` | Optional Android app (WebView wrapper: volume keys, gesture block, rumble strength); `android\build.ps1` builds it with the Android SDK, no Gradle |
 | `vendor/` | Official signed ViGEmBus 1.22.0 installer |
 | `tools/build.ps1` | Builds `Install.exe` and the release zip |
 

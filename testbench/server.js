@@ -84,7 +84,7 @@ const isManager = (req) => isLoopback(req.socket.remoteAddress)
   && (LOCAL_ORIGINS.has(req.headers.origin ?? '') || (req.method === 'GET' && !req.headers.origin && !req.headers.upgrade));
 
 // ---------- HTTP ----------
-const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json' };
+const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.apk': 'application/vnd.android.package-archive' };
 const json = (res, code, body) => { res.writeHead(code, { 'content-type': 'application/json', 'cache-control': 'no-store' }); res.end(JSON.stringify(body)); };
 const readBody = (req) => new Promise((resolve) => { let d = ''; req.on('data', (c) => { d += c; if (d.length > 1e5) req.destroy(); }); req.on('end', () => { try { resolve(JSON.parse(d || '{}')); } catch { resolve({}); } }); });
 
@@ -106,7 +106,8 @@ async function handle(req, res) {
       const noPort = i.kind === 'hotspot' && front.http;
       const httpUrl = noPort ? `http://${i.address}/` : `http://${i.address}:${HTTP_PORT}/`, httpsUrl = `https://${i.address}:${HTTPS_PORT}/`;
       const nameUrl = i.kind === 'hotspot' && front.mdns ? (noPort ? `http://${HOTSPOT_NAME}` : `http://${HOTSPOT_NAME}:${HTTP_PORT}`) : null;
-      return { ...i, httpUrl, httpsUrl, nameUrl, qrHttp: await qr(httpUrl), qrHttps: await qr(httpsUrl) };
+      const apkUrl = `http://${i.address}:${HTTP_PORT}/PhoneAsController.apk`;   // the optional Android app, downloadable offline
+      return { ...i, httpUrl, httpsUrl, nameUrl, apkUrl, qrHttp: await qr(httpUrl), qrHttps: await qr(httpsUrl), qrApk: await qr(apkUrl) };
     }));
     return json(res, 200, { interfaces: ifs, rtc: !!rtc, udpPort: UDP_PORT, palette: players.PALETTE });
   }

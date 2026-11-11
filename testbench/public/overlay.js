@@ -21,6 +21,11 @@ export function save(key, value) {
 }
 
 let current = null, wakeLock = null, timer = null;
+// Listeners told the current mode ('pad', 'wheel', … or 'idle') whenever a controller screen opens or closes.
+const overlayListeners = new Set();
+export const onOverlay = (fn) => overlayListeners.add(fn);
+export const overlayMode = () => current?.mode ?? 'idle';
+const notifyOverlay = () => { for (const fn of overlayListeners) fn(overlayMode()); };
 onReconnect(() => current && setMode(current.mode));
 
 export async function enterFullscreen() {
@@ -40,6 +45,7 @@ export async function openOverlay(el, mode, heartbeat) {
   try { wakeLock = await navigator.wakeLock?.request('screen'); } catch {}
   if (!wakeLock) startKeepAwake();
   if (heartbeat) timer = setInterval(heartbeat, 4);
+  notifyOverlay();
 }
 
 export function closeOverlay(keepFullscreen = false) {
@@ -53,6 +59,7 @@ export function closeOverlay(keepFullscreen = false) {
   stopKeepAwake();
   setMode('idle');
   if (!keepFullscreen) exitFullscreen();
+  notifyOverlay();
 }
 
 export function setupCanvas(canvas) {

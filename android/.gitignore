@@ -1,0 +1,7 @@
+build/
+out/
+*.idsig
+# Never commit signing material
+*.jks
+*.keystore
+password.txt

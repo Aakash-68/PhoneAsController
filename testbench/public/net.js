@@ -1,5 +1,6 @@
 // Connection to the laptop: WebSocket always (control + fallback), WebRTC DataChannel optional for binary.
 import { MSG, SIZE, Ring, fmt, now } from './common.js';
+import { inApp, nativeCall } from './native.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -103,6 +104,11 @@ function rumble({ large, small, rgb }) {
   feedback.rumble = (Math.max(large, small) / 255) * (me.tune?.vib ?? 0.8);
   if (rgb && (rgb[0] || rgb[1] || rgb[2])) feedback.rgb = rgb;
   clearInterval(rumbleTimer);
+  if (inApp) {   // the app can set real motor strength, so no pulse pattern is needed
+    nativeCall('rumble', feedback.rumble < 0.04 ? 0 : Math.round(30 + 225 * feedback.rumble));
+    if (feedback.rumble >= 0.04) rumbleTimer = setTimeout(() => nativeCall('rumble', 0), 5000);
+    return;
+  }
   if (feedback.rumble < 0.04) { navigator.vibrate?.(0); return; }
   const on = Math.round(12 + 38 * feedback.rumble), off = Math.round(40 * (1 - feedback.rumble));
   const pulse = () => navigator.vibrate?.([on, off, on, off, on, off]);

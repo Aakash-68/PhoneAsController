@@ -119,6 +119,14 @@ $('qrSecure').onclick = () => {
   renderSecure(); renderQr();
 };
 renderSecure();
+// Android app download, straight from this laptop (works offline over the hotspot).
+$('apkBtn').onclick = () => {
+  const n = (joinTab === 'hotspot' ? netOf('hotspot') : joinTab === 'usb' ? netOf('usb') : nets.find((x) => x.address === joinTab)) ?? netOf('hotspot') ?? nets[0];
+  $('apkQr').innerHTML = n ? n.qrApk : '';
+  $('apkUrl').textContent = n ? n.apkUrl : 'Connect a network first (hotspot, USB or Wi-Fi).';
+  $('apkDlg').showModal();
+};
+$('apkClose').onclick = () => $('apkDlg').close();
 $('addPhone').onclick = () => { document.querySelector('[data-view="devices"]').click(); joining = true; renderJoinOverlay(); };
 $('joinClose').onclick = () => { joining = false; renderJoinOverlay(); };
 $('wifiOn').onclick = () => changeHotspot({ wifiOn: true });
