@@ -201,6 +201,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .steps li { counter-increment: s; display: grid; gap: 8px; align-content: start; font-size: 14.5px; min-width: 0; }
 .steps li::before { content: counter(s); width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; font: 400 15px var(--mono); color: var(--ink); background: linear-gradient(145deg, #f6f4f0, #e5e1db); box-shadow: var(--raise-sm); margin-bottom: 8px; }
 .install-cta { margin-top: 34px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; }
+.install-cta.apk h3, .install-cta.apk > p:first-of-type { flex-basis: 100%; margin: 0; }
+.install-cta.apk > p:first-of-type { max-width: 70ch; }
 
 /* closing it */
 .off { padding: clamp(24px, 4vw, 44px); display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(22px, 4vw, 48px); align-items: center; }
@@ -266,7 +268,7 @@ footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M6.5 10 12 15.5 17.500 10M4 20.500h16"/></svg>
           Download for Windows
         </a>
-        <p class="note">Free · 48 MB zip · Windows 10 and 11, 64-bit<br><a href="https://github.com/Aakash-68/PhoneAsController">See the source on GitHub</a></p>
+        <p class="note">Free · 48 MB zip · Windows 10 and 11, 64-bit<br><a href="PhoneAsController.apk" download>Optional Android app (APK, 185 KB)</a> · <a href="https://github.com/Aakash-68/PhoneAsController">See the source on GitHub</a></p>
       </div>
       <div class="stage">
         <div class="win"><img src="assets/manager.webp" width="2480" height="1600" alt="The PhoneAsController window on Windows, showing two QR codes: step 1 joins the laptop's Wi-Fi, step 2 opens the controller." fetchpriority="high"></div>
@@ -287,6 +289,7 @@ footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
       <dl class="spec well">
         <div><dt class="lbl">PC</dt><dd>Windows 10 or 11, 64-bit</dd></div>
         <div><dt class="lbl">Phone</dt><dd>Android with Chrome, nothing to install</dd></div>
+        <div><dt class="lbl">Android app</dt><dd>Optional APK: volume keys as triggers, no accidental back-swipes, real rumble strength, tilt with no certificate warning</dd></div>
         <div><dt class="lbl">Acts as</dt><dd>Xbox 360 or DualShock 4 controller, racing wheel, keyboard, trackpad</dd></div>
         <div><dt class="lbl">Connects</dt><dd>Laptop hotspot, USB cable or shared Wi-Fi</dd></div>
         <div><dt class="lbl">Phones</dt><dd>Up to 8 at once</dd></div>
@@ -387,6 +390,15 @@ footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
           Download for Windows
         </a>
         <p class="note">48 MB zip. Removes cleanly from Windows Settings, under Installed apps.</p>
+      </div>
+      <div class="install-cta apk" id="android">
+        <h3>Optional: the Android app</h3>
+        <p>The controller works in the phone's browser with nothing installed. The app adds what a browser can't: the volume keys work as triggers or any button (with no volume slider popping up), Android's edge back-swipe is blocked while you play, rumble follows the game's strength, tilt works with no certificate warning, and it finds your laptop by itself.</p>
+        <a class="key" href="PhoneAsController.apk" download>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M6.500 10 12 15.500 17.500 10M4 20.500h16"/></svg>
+          Download the Android app
+        </a>
+        <p class="note">APK, 185 KB · Android 8 or newer · not on the Play Store. Open the downloaded file and allow installs from your browser when Android asks. You can also get it offline from the PC app: <b>GET APP</b> shows a QR code.</p>
       </div>
     </div>
   </section>
