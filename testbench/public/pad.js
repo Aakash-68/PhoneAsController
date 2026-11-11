@@ -17,6 +17,7 @@ import { lookDown, lookMove, lookUp, resetLook, initLook } from './look.js';
 import { volTrig, initVolKeys, resetVolKeys } from './volkeys.js';
 import { tilt, tiltValues, tiltNeedsCalibration, openTiltWizard, onPadOpen as tiltOnPadOpen, zeroTilt, motionText, renderTiltLive } from './tilt.js';
 import './padsettings.js';
+import { renderPadVisuals } from './padvis.js';
 
 const padEl = $('pad');
 export const padOpen = () => isOpen(padEl);
@@ -110,6 +111,7 @@ $('padZero').onclick = zeroTilt;
 export function renderPad() {
   renderTiltLive();
   if (!isOpen(padEl)) return;
+  renderPadVisuals();
   const a = summarize(acks.ackRtt.values());
   $('padInfo').textContent = `${link.mode} · sent ${gp.sent} · ack RTT p50 ${fmt(a?.p50)} ms · ${motionText()}`;
   for (const [id, v] of [['l2Btn', gp.l2], ['r2Btn', gp.r2]]) {

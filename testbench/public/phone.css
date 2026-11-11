@@ -330,3 +330,16 @@ body[data-glyph=ps] #wheel .fbw.a { color: #7896b5; } body[data-glyph=ps] #wheel
 #padDrawer header button { width: 32px; height: 32px; padding: 0; border-radius: 50%; }
 #padDrawer .pd-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; }
 #padDrawer .card { margin: 0 0 10px; padding: 12px; }
+
+/* ---------- active = red, whatever drove it (padvis.js adds .act from the state sent to the laptop) ---------- */
+#pad { --act: #e5484d; --act-glow: rgba(229, 72, 77, .45); }
+#pad .ctl.act, #pad .dpad button.act, #pad .fb.act { box-shadow: 0 0 0 2px var(--act), 0 0 14px var(--act-glow) !important; }
+#pad .dpad button.act::before { border-color: var(--act); }
+#pad .sys.act svg { stroke: var(--act); }
+#pad .bump.act .tl, #pad .trig.act .tl { color: var(--act); }
+#pad .trig.act .tfill { background: linear-gradient(0deg, var(--act-glow), transparent); border-top-color: var(--act); }
+#pad .trig.act .tv { color: var(--act); opacity: 1; }
+#pad .stick.act .arc { background: conic-gradient(from calc(var(--ang, 0deg) + 45deg), transparent, var(--act) 45deg, transparent 90deg, transparent); }
+#pad .stick.act .cap { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 0 0 1.5px var(--act), 0 4px 10px rgba(0, 0, 0, .5); }
+#pad .trig.act { box-shadow: none !important; }
+#pad .trig.act .tbody { box-shadow: inset 0 0 0 2px var(--act), 0 0 14px var(--act-glow); }
