@@ -1,0 +1,13 @@
+/* look — owned by look module. Touch-look ring: follows the finger, transform-only, never takes touches. */
+#pad .look-ring {
+  position: fixed; left: 0; top: 0; z-index: 5;
+  box-sizing: border-box; padding: 0;
+  width: calc(var(--u, 6) * 9px); height: calc(var(--u, 6) * 9px);
+  margin: calc(var(--u, 6) * -4.5px) 0 0 calc(var(--u, 6) * -4.5px);
+  border-radius: 50%; background: none;
+  border: 1.5px solid var(--player, #c8714f);
+  pointer-events: none; opacity: 0; will-change: transform;
+  transition: opacity .12s;
+}
+#pad .look-ring.vis { opacity: .4; transition: none; }
+#set-look select { flex: 1 1 auto; min-width: 0; max-width: 100%; text-overflow: ellipsis; }

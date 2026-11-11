@@ -63,6 +63,7 @@ Windows **Settings → Apps → Installed apps → PhoneController → Uninstall
 | `testbench/hotspotname.js` | `phonepad.local` (mDNS) and port 80, on the hotspot only |
 | `testbench/public/app.*` | Manager window |
 | `testbench/public/index.html`, `phone.css`, `hud.js`, `mouse.js`, `pad.js`, `wheel.js`, `keys.js` | Phone pages |
+| `testbench/public/sticks.js`, `look.js`, `tilt.js`, `volkeys.js`, `padsettings.js` | Gamepad features: sticks (floating centre, dead zone, L3/R3 double-tap), touch-look, tilt triggers, volume keys, live settings drawer |
 | `bridge/` | `PhoneController.exe`: launcher, controller bridge (`--bridge`, ViGEm), hotspot helper (`--net`, Wi-Fi Direct) |
 | `installer/` | `Install.exe` source |
 | `vendor/` | Official signed ViGEmBus 1.22.0 installer |

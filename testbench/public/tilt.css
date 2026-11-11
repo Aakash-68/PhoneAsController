@@ -1,0 +1,12 @@
+/* tilt — owned by tilt module (tilt.js renders #set-tilt) */
+#set-tilt .tl-editor { display: block; width: 100%; height: 190px; margin: 8px 0 4px; border-radius: 10px;
+  background: var(--panel-2, #23262b); box-shadow: inset 0 0 0 1px var(--line, #2c2f35);
+  touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; cursor: crosshair; }
+#set-tilt .tl-hint { margin-bottom: 6px; }
+#set-tilt .tl-nums { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 6px 0; }
+#set-tilt .tl-num { display: flex; align-items: center; gap: 6px; }
+#set-tilt .tl-num button { width: 34px; height: 34px; padding: 0; font-size: 16px; line-height: 1; }
+#set-tilt .tl-num b { min-width: 46px; text-align: center; font-family: var(--mono, monospace); font-weight: 400; font-size: 13px; }
+#set-tilt .tl-actions { gap: 6px; margin: 8px 0 6px; }
+#set-tilt .tl-actions button { padding: 8px 11px; }
+#set-tilt #calibStatus { margin: 4px 0; }

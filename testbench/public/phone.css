@@ -319,3 +319,14 @@ body[data-glyph=ps] #wheel .fbw.a { color: #7896b5; } body[data-glyph=ps] #wheel
 #wheel.editing .steerseg, #wheel.editing .pillbtn, #wheel.editing .padinfo { visibility: hidden; }
 
 /* Table mouse: the whole screen is the two buttons of a mouse, split by the scroll strip. */
+
+/* ---------- live controller settings drawer (padsettings.js) ---------- */
+#padDrawer { position: fixed; top: 0; bottom: 0; right: 0; z-index: 22; width: min(420px, 48vw); display: flex; flex-direction: column;
+  background: color-mix(in srgb, var(--panel) 96%, transparent); box-shadow: -1px 0 0 var(--line); padding: 10px 12px env(safe-area-inset-bottom); }
+#padDrawer[data-side=left] { right: auto; left: 0; box-shadow: 1px 0 0 var(--line); }
+#padDrawer header { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; }
+#padDrawer header b { font-size: 14px; font-weight: 500; }
+#padDrawer header .sub { margin-right: auto; font-size: 11px; }
+#padDrawer header button { width: 32px; height: 32px; padding: 0; border-radius: 50%; }
+#padDrawer .pd-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; }
+#padDrawer .card { margin: 0 0 10px; padding: 12px; }

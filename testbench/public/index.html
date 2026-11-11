@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="phone.css">
+<link rel="stylesheet" href="sticks.css">
+<link rel="stylesheet" href="look.css">
+<link rel="stylesheet" href="tilt.css">
+<link rel="stylesheet" href="vol.css">
 </head>
 <body class="phone">
 
@@ -52,22 +56,12 @@
 
     <!-- ===== Pad settings ===== -->
     <section class="view" id="view-padinfo">
-      <div class="card">
-        <h3>Tilt triggers</h3>
-        <p class="small muted">Dip the <b>right</b> side down for <b>RT / R2</b>, the <b>left</b> side for <b>LT / L2</b>. More tilt = harder press.</p>
-        <label class="row"><input type="checkbox" id="tiltOn" checked> Enable tilt triggers</label>
-        <label class="row"><input type="checkbox" id="hapticDetents" checked> Haptic clicks at 50% and 100%</label>
-        <div class="row wrap">
-          <button class="primary" id="calibStart">Calibrate tilt</button>
-          <button id="calibReset">Reset</button>
-        </div>
-        <div class="small" id="calibStatus"></div>
-        <div id="defaultCurve">
-          <label class="row">Dead zone <input type="range" id="tiltDead" min="0" max="20" step="1"> <b id="tiltDeadV"></b>°</label>
-          <label class="row">Full press at <input type="range" id="tiltFull" min="10" max="60" step="1"> <b id="tiltFullV"></b>°</label>
-        </div>
-        <div class="small muted" id="tiltLive">waiting for motion sensor…</div>
-      </div>
+      <p class="small muted">Tip: on the gamepad, tap the ⚙ button, then <b>Controller settings</b> to change these while you play.</p>
+     <div id="padSettings">
+      <div class="card" id="set-sticks"></div>
+      <div class="card" id="set-look"></div>
+      <div class="card" id="set-vol"></div>
+      <div class="card" id="set-tilt"></div>
       <div class="card">
         <h3>On-screen triggers</h3>
         <label class="row">Trigger input
@@ -77,7 +71,7 @@
             <option value="pressure">Pressure: press harder</option>
             <option value="digital">On / off</option>
           </select></label>
-        <p class="small muted">Tilt works at the same time: the higher of the two wins. Double-tap a stick and hold to click it (L3 / R3).</p>
+        <p class="small muted">Tilt and volume keys work at the same time: the highest wins.</p>
       </div>
       <div class="card">
         <h3>Pressure calibration</h3>
@@ -88,6 +82,7 @@
         </div>
         <div class="small pressStatus"></div>
       </div>
+     </div>
     </section>
 
     <!-- ===== Wheel settings ===== -->
@@ -211,6 +206,7 @@
       </div>
       <footer><span class="sub" id="hNote"></span>
         <button id="padZero" data-only="pad">Zero tilt</button>
+        <button id="hControls" data-only="pad">Controller settings</button>
         <button id="hReset" data-only="home pad">Reset layout</button>
         <button class="primary" id="hEdit" data-only="pad">Edit layout</button>
       </footer>
@@ -231,6 +227,12 @@
       </footer>
     </div>
   </div>
+
+  <!-- Live controller settings: #padSettings moves in here while the pad is open, so changes can be tried at once. -->
+  <aside id="padDrawer" class="hidden">
+    <header><b>Controller settings</b><span class="sub"></span><button class="x" id="pdClose" aria-label="Close">✕</button></header>
+    <div class="pd-body"></div>
+  </aside>
 
   <!-- ===== Calibration wizard (tilt + pressure) ===== -->
   <div id="calib" class="hidden">

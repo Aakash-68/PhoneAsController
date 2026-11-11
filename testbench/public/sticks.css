@@ -1,0 +1,9 @@
+/* sticks — owned by sticks module */
+/* L3 / R3 active: whole stick goes red (cap, ring, well glow). */
+.ctlr .stick.l3 { --player: #e5484d; }
+.ctlr .stick.l3 .cap { background: color-mix(in srgb, #e5484d 55%, var(--panel-2));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 0 0 2px #e5484d, 0 0 calc(var(--u, 4) * 3px) rgba(229, 72, 77, .7); }
+.ctlr .stick.l3 .dish { background: #7a1f22; box-shadow: inset 0 0 0 1px #e5484d; }
+.ctlr .stick.l3 .well { box-shadow: inset 0 0 0 2px #e5484d, 0 0 calc(var(--u, 4) * 4px) rgba(229, 72, 77, .55), inset 0 0 calc(var(--u, 4) * 5px) rgba(229, 72, 77, .35); }
+.ctlr .stick.l3 .well::after { border-color: rgba(229, 72, 77, .5); }
+.ctlr .stick.l3 .arc { opacity: 1; background: none; box-shadow: 0 0 0 2px #e5484d; -webkit-mask: none; mask: none; }
